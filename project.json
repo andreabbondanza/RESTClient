@@ -1,4 +1,6 @@
-﻿{
+{
+  "title": "RESTClient",
+  "description": "A .net core one library for REST Client",
   "version": "1.0.0-*",
 
   "dependencies": {
