@@ -339,6 +339,7 @@ namespace DewCore.RestClient
         /// <param name="args">The querystring args</param>
         /// <param name="headers">The headers</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformDeleteRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
@@ -385,6 +386,7 @@ namespace DewCore.RestClient
         /// <param name="args">The querystring args</param>
         /// <param name="headers">The headers</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformGetRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
@@ -430,6 +432,7 @@ namespace DewCore.RestClient
         /// <param name="args">The querystring args</param>
         /// <param name="headers">The headers</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformHeadRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
@@ -476,7 +479,8 @@ namespace DewCore.RestClient
         /// <param name="headers">Dictionary of headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
-        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
+        /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformOptionsRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             HttpClient httpClient = new HttpClient();
@@ -520,7 +524,8 @@ namespace DewCore.RestClient
         /// <param name="headers">Dictionary of headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
-        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
+        /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformPatchRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             HttpClient httpClient = new HttpClient();
@@ -566,7 +571,8 @@ namespace DewCore.RestClient
         /// <param name="headers">Dictionary of headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
-        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
+        /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformPostRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             HttpClient httpClient = new HttpClient();
@@ -612,7 +618,8 @@ namespace DewCore.RestClient
         /// <param name="headers">Dictionary of headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
-        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Probably misused header value</exception>
+        /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<RESTResponse> PerformPutRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             HttpClient httpClient = new HttpClient();
