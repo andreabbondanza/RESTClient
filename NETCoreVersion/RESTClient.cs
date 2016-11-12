@@ -77,7 +77,6 @@ namespace DewCore.RestClient
         /// <param name="url">The API Host url</param>
         /// <param name="args">Query string args</param>
         /// <param name="headers">Dictionary of headers</param>
-        /// <param name="content">The message content</param>
         /// <returns></returns>
         Task<RESTResponse> PerformHeadRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null);
     }
@@ -133,8 +132,7 @@ namespace DewCore.RestClient
         /// <summary>
         /// Constructor with args
         /// </summary>
-        /// <param name="content">The HttpResponseMessage</param>
-        /// <param name="headers">The HttpResponseHeaderCollection</param>
+        /// <param name="response">The HttpResponseMessage</param>
         public RESTResponse(HttpResponseMessage response)
         {
             this.Response = response;
@@ -223,6 +221,9 @@ namespace DewCore.RestClient
             return response;
         }
     }
+    /// <summary>
+    /// RESTClient class - a class for REST Requests
+    /// </summary>
     public class RESTClient : IRESTClient
     {
         /// <summary>
