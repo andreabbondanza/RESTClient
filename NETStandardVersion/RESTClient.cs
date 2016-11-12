@@ -118,6 +118,16 @@ namespace DewCore.RestClient
             return this.Response.StatusCode;
         }
         /// <summary>
+        /// Check if the status code is succesful 
+        /// </summary>
+        /// <returns></returns>
+        public bool IsSuccesStatusCode()
+        {
+            if (this.Response == null)
+                throw new NullReferenceException();
+            return this.Response.IsSuccessStatusCode;
+        }
+        /// <summary>
         /// Return response body as string
         /// </summary>
         /// <returns></returns>
