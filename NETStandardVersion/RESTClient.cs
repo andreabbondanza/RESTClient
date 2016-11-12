@@ -9,6 +9,28 @@ using System.Net.Http.Headers;
 namespace DewCore.RestClient
 {
     /// <summary>
+    /// RESTClient http status macrotypes
+    /// </summary>
+    public enum HttpStatusType
+    {
+        /// <summary>
+        /// 2xx
+        /// </summary>
+        Successful,
+        /// <summary>
+        /// 3xx
+        /// </summary>
+        Redirected,
+        /// <summary>
+        /// 4xx
+        /// </summary>
+        Error,
+        /// <summary>
+        /// 5xxx
+        /// </summary>
+        Fault
+    }
+    /// <summary>
     /// Rest client library interface
     /// </summary>
     public interface IRESTClient
@@ -120,12 +142,62 @@ namespace DewCore.RestClient
         /// <summary>
         /// Check if the status code is succesful 
         /// </summary>
+        /// <exception cref="NullReferenceException">If Response object is null</exception>
         /// <returns></returns>
         public bool IsSuccesStatusCode()
         {
             if (this.Response == null)
                 throw new NullReferenceException();
-            return this.Response.IsSuccessStatusCode;
+            return (int)this.Response.StatusCode >= 200 && (int)this.Response.StatusCode < 300;
+        }
+        /// <summary>
+        /// Check if the status code is redirect
+        /// </summary>
+        /// <exception cref="NullReferenceException">If Response object is null</exception>
+        /// <returns></returns>
+        public bool IsRedirectedStatusCode()
+        {
+            if (this.Response == null)
+                throw new NullReferenceException();
+            return (int)this.Response.StatusCode >= 300 && (int)this.Response.StatusCode < 400;
+        }
+        /// <summary>
+        /// Check if the status code is an error
+        /// </summary>
+        /// <exception cref="NullReferenceException">If Response object is null</exception>
+        /// <returns></returns>
+        public bool IsErrorStatusCode()
+        {
+            if (this.Response == null)
+                throw new NullReferenceException();
+            return (int)this.Response.StatusCode >= 400 && (int)this.Response.StatusCode < 500;
+        }
+        /// <summary>
+        /// Check if the status code is a fault
+        /// </summary>
+        /// <exception cref="NullReferenceException">If Response object is null</exception>
+        /// <returns></returns>
+        public bool IsFaultStatusCode()
+        {
+            if (this.Response == null)
+                throw new NullReferenceException();
+            return (int)this.Response.StatusCode >= 500 && (int)this.Response.StatusCode < 600;
+        }
+        /// <summary>
+        /// Return the http status type
+        /// </summary>
+        /// <exception cref="NullReferenceException">If Response object is null</exception>
+        /// <returns></returns>
+        public HttpStatusType GetHttpStatusCodeType()
+        {
+            HttpStatusType result = HttpStatusType.Successful;
+            if (this.IsRedirectedStatusCode())
+                result = HttpStatusType.Redirected;
+            if (this.IsErrorStatusCode())
+                result = HttpStatusType.Error;
+            if (this.IsFaultStatusCode())
+                result = HttpStatusType.Fault;
+            return result;
         }
         /// <summary>
         /// Return response body as string
