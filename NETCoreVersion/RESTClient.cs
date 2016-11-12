@@ -11,7 +11,7 @@ namespace DewCore.RestClient
     /// <summary>
     /// Rest client library interface
     /// </summary>
-    interface IRESTClient
+    public interface IRESTClient
     {
         /// <summary>
         /// Check if an url is valid
@@ -83,7 +83,7 @@ namespace DewCore.RestClient
     /// <summary>
     /// Response interface
     /// </summary>
-    interface IRESTResponse
+    public interface IRESTResponse
     {
         /// <summary>
         /// Get the response status code
