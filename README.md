@@ -8,7 +8,8 @@ We have also extended the HttpClient object with Patch\Head\Options wrappers ove
 Please check inline docs for more information.
 
 ## Note
-Nothing for now
+You can recompile the .NETStandard version with the .NET target you want. Be careful about the 1.6 target, for a roslyn bug you'll not be able to compile.
+
 
 ## About
 [Andrea Vincenzo Abbondanza](http://www.andrewdev.eu)
