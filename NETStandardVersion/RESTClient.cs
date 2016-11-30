@@ -166,6 +166,66 @@ namespace DewCore.RestClient
         /// </summary>
         /// <returns></returns>
         HttpResponseMessage GetHttpResponse();
+
+    }
+    /// <summary>
+    /// Request object interface
+    /// </summary>
+    public interface IRESTRequest
+    {
+        /// <summary>
+        /// Add header to the request
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        void AddHeader(string key, string value);
+        /// <summary>
+        /// Return the headers
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<string, string> GetHeaders();
+        /// <summary>
+        /// Add the content to the request
+        /// </summary>
+        /// <param name="content"></param>
+        void AddContent(HttpContent content);
+        /// <summary>
+        /// Return the request content
+        /// </summary>
+        /// <returns></returns>
+        HttpContent GetContent();
+        /// <summary>
+        /// Add a query arg
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        void AddQueryArgs(string key, string value);
+        /// <summary>
+        /// Get the query args
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<string, string> GetQueryArgs();
+        /// <summary>
+        /// Set the url
+        /// </summary>
+        /// <exception cref="UriFormatException"></exception>
+        /// <param name="url"></param>
+        void SetUrl(string url);
+        /// <summary>
+        /// Return the request url
+        /// </summary>
+        /// <returns></returns>
+        string GetUrl();
+        /// <summary>
+        /// Return the request method
+        /// </summary>
+        /// <returns></returns>
+        Method GetMethod();
+        /// <summary>
+        /// Set the method
+        /// </summary>
+        /// <param name="http"></param>
+        void SetMethod(Method http);
     }
     /// <summary>
     /// Standard response object
@@ -361,66 +421,6 @@ namespace DewCore.RestClient
         }
     }
     /// <summary>
-    /// Request object interface
-    /// </summary>
-    public interface IRESTRequest
-    {
-        /// <summary>
-        /// Add header to the request
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        void AddHeader(string key, string value);
-        /// <summary>
-        /// Return the headers
-        /// </summary>
-        /// <returns></returns>
-        Dictionary<string, string> GetHeaders();
-        /// <summary>
-        /// Add the content to the request
-        /// </summary>
-        /// <param name="content"></param>
-        void AddContent(HttpContent content);
-        /// <summary>
-        /// Return the request content
-        /// </summary>
-        /// <returns></returns>
-        HttpContent GetContent();
-        /// <summary>
-        /// Add a query arg
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        void AddQueryArgs(string key, string value);
-        /// <summary>
-        /// Get the query args
-        /// </summary>
-        /// <returns></returns>
-        Dictionary<string, string> GetQueryArgs();
-        /// <summary>
-        /// Set the url
-        /// </summary>
-        /// <exception cref="UriFormatException"></exception>
-        /// <param name="url"></param>
-        void SetUrl(string url);
-        /// <summary>
-        /// Return the request url
-        /// </summary>
-        /// <returns></returns>
-        string GetUrl();
-        /// <summary>
-        /// Return the request method
-        /// </summary>
-        /// <returns></returns>
-        Method GetMethod();
-        /// <summary>
-        /// Set the method
-        /// </summary>
-        /// <param name="http"></param>
-        void SetMethod(Method http);
-    }
-
-    /// <summary>
     /// RESTClient class - a class for REST Requests
     /// </summary>
     public class RESTClient : IRESTClient
@@ -470,38 +470,40 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformDeleteRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
             IRESTResponse response = null;
-            string queryArgs = "";
-            if (!this.IsValidUrl(url))
-                throw new ArgumentException("The current url is not valid");
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+                if (!this.IsValidUrl(url))
+                    throw new ArgumentException("The current url is not valid");
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the DELETE request
+                    HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs));
+                    response = this.GetRESTResponse(httpResponse);
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message);
                 }
-                //Send the DELETE request
-                HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs));
-                response = this.GetRESTResponse(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
             }
             return response;
         }
@@ -516,38 +518,42 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformGetRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
-            string queryArgs = "";
+
             IRESTResponse response = null;
-            if (!this.IsValidUrl(url))
-                throw new ArgumentException("The current url is not valid");
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+
+                if (!this.IsValidUrl(url))
+                    throw new ArgumentException("The current url is not valid");
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the GET request
+                    HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs));
+                    response = this.GetRESTResponse(httpResponse);
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message); ;
                 }
-                //Send the GET request
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs));
-                response = this.GetRESTResponse(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message); ;
             }
             return response;
         }
@@ -562,38 +568,41 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformHeadRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
-            string queryArgs = "";
             IRESTResponse response = null;
-            if (!this.IsValidUrl(url))
-                throw new ArgumentException("The current url is not valid");
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+
+                if (!this.IsValidUrl(url))
+                    throw new ArgumentException("The current url is not valid");
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the HEAD request
+                    HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs));
+                    response = this.GetRESTResponse(httpResponse);
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message); ;
                 }
-                //Send the HEAD request
-                HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs));
-                response = this.GetRESTResponse(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message); ;
             }
             return response;
         }
@@ -609,36 +618,38 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformOptionsRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
-            string queryArgs = "";
             IRESTResponse response = null;
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the PATCH request
+                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
+                    response = this.GetRESTResponse(httpResponse);
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message); ;
                 }
-                //Send the PATCH request
-                HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
-                response = this.GetRESTResponse(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message); ;
             }
             return response;
         }
@@ -654,38 +665,40 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformPatchRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
-            string queryArgs = "";
             IRESTResponse response = null;
-            if (!this.IsValidUrl(url))
-                throw new ArgumentException("The current url is not valid");
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+                if (!this.IsValidUrl(url))
+                    throw new ArgumentException("The current url is not valid");
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the PUT request
+                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
+                    response = this.GetRESTResponse(httpResponse);
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message); ;
                 }
-                //Send the PUT request
-                HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
-                response = this.GetRESTResponse(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message); ;
             }
             return response;
         }
@@ -701,38 +714,40 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformPostRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
-            string queryArgs = "";
             IRESTResponse response = null;
-            if (!this.IsValidUrl(url))
-                throw new ArgumentException("The current url is not valid");
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+                if (!this.IsValidUrl(url))
+                    throw new ArgumentException("The current url is not valid");
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the POST request
+                    HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content);
+                    response = this.GetRESTResponse(httpResponse); ;
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message); ;
                 }
-                //Send the POST request
-                HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content);
-                response = this.GetRESTResponse(httpResponse); ;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message); ;
             }
             return response;
         }
@@ -748,38 +763,40 @@ namespace DewCore.RestClient
         /// <returns>RESTResponse, null if something goes wrong</returns>
         public async Task<IRESTResponse> PerformPutRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpRequestHeaders headersCollection = null;
-            string queryArgs = "";
             IRESTResponse response = null;
-            if (!this.IsValidUrl(url))
-                throw new ArgumentException("The current url is not valid");
-            try
+            using (HttpClient httpClient = new HttpClient())
             {
-                headersCollection = httpClient.DefaultRequestHeaders;
-                if (headers != null)
+                HttpRequestHeaders headersCollection = null;
+                string queryArgs = "";
+                if (!this.IsValidUrl(url))
+                    throw new ArgumentException("The current url is not valid");
+                try
                 {
-                    foreach (var item in headers)
+                    headersCollection = httpClient.DefaultRequestHeaders;
+                    if (headers != null)
                     {
-                        headersCollection.Add(item.Key, item.Value);
+                        foreach (var item in headers)
+                        {
+                            headersCollection.Add(item.Key, item.Value);
+                        }
                     }
+                    if (args != null)
+                    {
+                        queryArgs = "?";
+                        foreach (var item in args)
+                        {
+                            queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
+                        }
+                        queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    }
+                    //Send the PUT request
+                    HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content);
+                    response = this.GetRESTResponse(httpResponse);
                 }
-                if (args != null)
+                catch (Exception e)
                 {
-                    queryArgs = "?";
-                    foreach (var item in args)
-                    {
-                        queryArgs = queryArgs + item.Key + "=" + item.Value + "&";
-                    }
-                    queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
+                    Debug.WriteLine(e.Message); ;
                 }
-                //Send the PUT request
-                HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content);
-                response = this.GetRESTResponse(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message); ;
             }
             return response;
         }
