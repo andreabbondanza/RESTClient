@@ -230,7 +230,7 @@ namespace DewCore.RestClient
     /// <summary>
     /// Standard response object
     /// </summary>
-    public class RESTResponse : IRESTResponse
+    public class RESTResponse : IRESTResponse, IDisposable
     {
         /// <summary>
         /// The HttpResponseMessage object
@@ -323,6 +323,27 @@ namespace DewCore.RestClient
         {
             return this.response;
         }
+        /// <summary>
+        /// Dispose object
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
+        }
+        /// <summary>
+        /// Internal dispose handler
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.response != null) this.response.Dispose();
+            }
+        }
+
 
         /// <summary>
         /// Constructor
