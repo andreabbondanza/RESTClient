@@ -1,3 +1,4 @@
+
 # RESTClient
 A simple library for .net core that can help you to consume REST services.
 
@@ -38,7 +39,13 @@ Or you can use directly RESTClient methods versions (PUT, GET, PATCH, ETC)
 
 Es: 
 ````C#
-RESTResponse response = (RESTResponse)await this.connection.Client.PerformGetRequestAsync(this.connection.ApiHost + "2/categories", queryAargs, headers);
+var apiHost = "https://myapi.com/";
+Dictionary<string, string> queryArgs = new Dictionary<string, string>();
+queryArgs.Add("order", "asc");
+Dictionary<string, string> headers = new Dictionary<string, string>();
+headers.Add("Accept", "*/*");
+RESTClient client = new RESTClient();
+RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers);
 ````
 
 ## Note
