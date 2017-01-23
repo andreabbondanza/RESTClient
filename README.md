@@ -10,7 +10,7 @@ Please check inline docs for more information.
 
 u## How to use
 
-### Status Macrotypes
+#### Status Macrotypes
 RESTClient http status macrotypes:
 - 2xx : Succesful
 - 3xx : Redirected
@@ -19,6 +19,7 @@ RESTClient http status macrotypes:
 
 ### Methods
 PUT, GET, POST, PATCH, HEAD, OPTIONS
+
 
 ### Interfaces
 The library is based on three interfaces:
@@ -64,6 +65,8 @@ RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHos
 ## Note
 You can recompile the .NETStandard version with the .NET target you want. Be careful about the 1.6 target, for a roslyn bug you'll not be able to compile.
 
+## NuGet
+You can find it on nuget with the name [DewRESTClient](https://www.nuget.org/packages/DewRESTClientStandard/)
 
 ## About
 [Andrea Vincenzo Abbondanza](http://www.andrewdev.eu)
