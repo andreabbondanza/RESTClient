@@ -55,9 +55,9 @@ Es:
 var apiHost = "https://myapi.com/";
 Dictionary<string, string> queryArgs = new Dictionary<string, string>();
 queryArgs.Add("order", "asc");
-Dictionary<string, string> headers = new Dictionary<string, string>();
-headers.Add("Accept", "*/*");
-RESTClient client = new RESTClient();
+Dictionary<string, string> headers = new Dictionary<string, string>();
+headers.Add("Accept", "*/*");
+RESTClient client = new RESTClient();
 RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers);
 ````
 
