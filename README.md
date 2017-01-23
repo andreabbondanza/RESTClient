@@ -8,7 +8,7 @@ We have also extended the HttpClient object with Patch\Head\Options wrappers ove
 
 Please check inline docs for more information.
 
-## How to use
+u## How to use
 
 ### Status Macrotypes
 RESTClient http status macrotypes:
@@ -18,7 +18,7 @@ RESTClient http status macrotypes:
 - 5xx : Fault 
 
 ### Methods
-PUT, GET, POST, PATCH, HEAD, OPTIONS
+qPUT, GET, POST, PATCH, HEAD, OPTIONS
 
 ### Interfaces
 The library is based on three interfaces:
@@ -34,6 +34,19 @@ You can use the library creating and filling a RESTRequest object this way.
 - Instantiate a RESTRequest object
 - Set URL, Method, etc
 - Execute RESTClient.PerformRequest(myRESTRequestObject)
+
+
+Es: 
+````C#
+var apiHost = "https://myapi.com/";
+RESTRequest request = new RESTRequest();
+request.SetMethod(Method.GET);
+request.SetUrl(apiHost + "2/categories");
+request.AddQueryArgs("order", "asc");
+request.AddHeader("Accept", "*/*");
+RESTClient client = new RESTClient();
+RESTResponse response = (RESTResponse)await client.PerformRequest(request);
+````
 
 Or you can use directly RESTClient methods versions (PUT, GET, PATCH, ETC)
 
