@@ -18,7 +18,7 @@ RESTClient http status macrotypes:
 - 5xx : Fault 
 
 ### Methods
-qPUT, GET, POST, PATCH, HEAD, OPTIONS
+PUT, GET, POST, PATCH, HEAD, OPTIONS
 
 ### Interfaces
 The library is based on three interfaces:
