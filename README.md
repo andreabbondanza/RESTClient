@@ -44,7 +44,7 @@ RESTRequest request = new RESTRequest();
 request.SetMethod(Method.GET);
 request.SetUrl(apiHost + "2/categories");
 request.AddQueryArgs("order", "asc");
-request.AddHeader("Accept", "text/html");
+request.AddHeader("Accept", "application/json");
 RESTClient client = new RESTClient();
 RESTResponse response = (RESTResponse)await client.PerformRequest(request);
 ````
@@ -57,7 +57,7 @@ var apiHost = "https://myapi.com/";
 Dictionary<string, string> queryArgs = new Dictionary<string, string>();
 queryArgs.Add("order", "asc");
 Dictionary<string, string> headers = new Dictionary<string, string>();
-headers.Add("Accept", "text/html");
+headers.Add("Accept", "application/json");
 RESTClient client = new RESTClient();
 RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers);
 ````
