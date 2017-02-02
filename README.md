@@ -1,4 +1,3 @@
-
 # RESTClient
 A simple library for .net core that can help you to consume REST services.
 
@@ -46,7 +45,13 @@ request.SetUrl(apiHost + "2/categories");
 request.AddQueryArgs("order", "asc");
 request.AddHeader("Accept", "application/json");
 RESTClient client = new RESTClient();
-RESTResponse response = (RESTResponse)await client.PerformRequest(request);
+using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
+{
+    var myJson = null;
+    if(response.IsSuccesStatusCode())
+        myJson = response.ReadResponseAsStringAsync();
+    ...
+}
 ````
 
 Or you can use directly RESTClient methods versions (PUT, GET, PATCH, ETC)
@@ -59,7 +64,13 @@ queryArgs.Add("order", "asc");
 Dictionary<string, string> headers = new Dictionary<string, string>();
 headers.Add("Accept", "application/json");
 RESTClient client = new RESTClient();
-RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers);
+using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers))
+{
+    var myJson = null;
+    if(response.IsSuccesStatusCode())
+        myJson = response.ReadResponseAsStringAsync();
+    ...
+}
 ````
 
 ## Note
