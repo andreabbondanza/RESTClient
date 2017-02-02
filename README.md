@@ -81,3 +81,6 @@ You can find it on nuget with the name [DewRESTClient](https://www.nuget.org/pac
 
 ## About
 [Andrea Vincenzo Abbondanza](http://www.andrewdev.eu)
+
+## Donate
+[Help me to grow up, if you want](https://payPal.me/andreabbondanza)
