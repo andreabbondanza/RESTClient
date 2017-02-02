@@ -8,7 +8,7 @@ We have also extended the HttpClient object with Patch\Head\Options wrappers ove
 
 Please check inline docs for more information.
 
-u## How to use
+## How to use
 
 #### Status Macrotypes
 RESTClient http status macrotypes:
