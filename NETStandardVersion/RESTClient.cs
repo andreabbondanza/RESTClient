@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net;
+using System.Net    ;
 using System.Net.Http.Headers;
 
 namespace DewCore.RestClient
@@ -787,7 +787,7 @@ namespace DewCore.RestClient
             IRESTResponse response = null;
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpRequestHeaders headersCollection = null;
+                HttpRequestHeaders headersCollection = null;    
                 string queryArgs = "";
                 if (!this.IsValidUrl(url))
                     throw new ArgumentException("The current url is not valid");
@@ -933,7 +933,7 @@ namespace DewCore.RestClient
         /// </summary>
         /// <param name="url">The URL</param>
         /// <returns>True if url is valid, false else</returns>
-        public bool IsValidUrl(string url)
+        public static bool IsValidUrl(string url)
         {
             bool Result = false;
             Uri MyUri = null;
