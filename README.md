@@ -9,7 +9,7 @@ Please check inline docs for more information.
 
 ## How to use
 
-### Status Macrotypes
+#### Status Macrotypes
 RESTClient http status macrotypes:
 - 2xx : Succesful
 - 3xx : Redirected
@@ -18,6 +18,7 @@ RESTClient http status macrotypes:
 
 ### Methods
 PUT, GET, POST, PATCH, HEAD, OPTIONS
+
 
 ### Interfaces
 The library is based on three interfaces:
@@ -34,16 +35,52 @@ You can use the library creating and filling a RESTRequest object this way.
 - Set URL, Method, etc
 - Execute RESTClient.PerformRequest(myRESTRequestObject)
 
+
+Es: 
+````C#
+var apiHost = "https://myapi.com/";
+RESTRequest request = new RESTRequest();
+request.SetMethod(Method.GET);
+request.SetUrl(apiHost + "2/categories");
+request.AddQueryArgs("order", "asc");
+request.AddHeader("Accept", "application/json");
+RESTClient client = new RESTClient();
+using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
+{
+    var myJson = null;
+    if(response.IsSuccesStatusCode())
+        myJson = response.ReadResponseAsStringAsync();
+    ...
+}
+````
+
 Or you can use directly RESTClient methods versions (PUT, GET, PATCH, ETC)
 
 Es: 
 ````C#
-RESTResponse response = (RESTResponse)await this.connection.Client.PerformGetRequestAsync(this.connection.ApiHost + "2/categories", queryAargs, headers);
+var apiHost = "https://myapi.com/";
+Dictionary<string, string> queryArgs = new Dictionary<string, string>();
+queryArgs.Add("order", "asc");
+Dictionary<string, string> headers = new Dictionary<string, string>();
+headers.Add("Accept", "application/json");
+RESTClient client = new RESTClient();
+using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers))
+{
+    var myJson = null;
+    if(response.IsSuccesStatusCode())
+        myJson = response.ReadResponseAsStringAsync();
+    ...
+}
 ````
 
 ## Note
 You can recompile the .NETStandard version with the .NET target you want. Be careful about the 1.6 target, for a roslyn bug you'll not be able to compile.
 
+## NuGet
+You can find it on nuget with the name [DewRESTClient](https://www.nuget.org/packages/DewRESTClientStandard/)
 
 ## About
 [Andrea Vincenzo Abbondanza](http://www.andrewdev.eu)
+
+## Donate
+[Help me to grow up, if you want](https://payPal.me/andreabbondanza)
