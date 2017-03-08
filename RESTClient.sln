@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DewRESTClientNetStandard", "NETStandardVersion\DewRESTClientNetStandard.csproj", "{EBD9AB92-EA89-49CF-A45E-31AA4D43A3C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DewRestClient", "DewRestClient\DewRestClient.csproj", "{2013648A-FB84-4E03-8BD5-DE7DE527CD93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EBD9AB92-EA89-49CF-A45E-31AA4D43A3C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBD9AB92-EA89-49CF-A45E-31AA4D43A3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBD9AB92-EA89-49CF-A45E-31AA4D43A3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBD9AB92-EA89-49CF-A45E-31AA4D43A3C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2013648A-FB84-4E03-8BD5-DE7DE527CD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2013648A-FB84-4E03-8BD5-DE7DE527CD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2013648A-FB84-4E03-8BD5-DE7DE527CD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2013648A-FB84-4E03-8BD5-DE7DE527CD93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
