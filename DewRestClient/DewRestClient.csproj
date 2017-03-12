@@ -21,4 +21,8 @@
     <DocumentationFile>bin\Release\netstandard1.6\DewRestClient.xml</DocumentationFile>
   </PropertyGroup>
 
+  <Target Name="Build">
+    <MSBuild Projects="$(ProjectPath)" Properties="Configuration=Release;Platform=Any CPU" />
+  </Target>
+
 </Project>
