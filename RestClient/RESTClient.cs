@@ -8,6 +8,11 @@ using System.Net.Http.Headers;
 
 namespace DewCore.RestClient
 {
+    public enum HeadersValidation
+    {
+        Yes,
+        No
+    }
     /// <summary>
     /// RESTClient http status macrotypes
     /// </summary>
@@ -173,6 +178,7 @@ namespace DewCore.RestClient
     /// </summary>
     public interface IRESTRequest
     {
+
         /// <summary>
         /// Add header to the request
         /// </summary>
@@ -446,6 +452,24 @@ namespace DewCore.RestClient
     /// </summary>
     public class RESTClient : IRESTClient
     {
+        private HeadersValidation doValidation = HeadersValidation.Yes;
+
+        private HttpRequestHeaders SetHeaders(HttpRequestHeaders headers, Dictionary<string,string> myHeaders)
+        {
+            var headersCollection = headers;
+            if (headers != null)
+            {
+                foreach (var item in myHeaders)
+                {
+                    if (this.doValidation == HeadersValidation.Yes)
+                        headersCollection.Add(item.Key, item.Value);
+                    else
+                        headersCollection.TryAddWithoutValidation(item.Key, item.Value);
+                }
+            }
+            return headersCollection;
+        }
+
         /// <summary>
         /// Return an instance of IRESTResponse
         /// </summary>
@@ -500,14 +524,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders,headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -521,7 +538,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs));
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw;
                 }
@@ -550,14 +567,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -571,7 +581,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs));
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     throw;
                 }
@@ -599,14 +609,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -620,7 +623,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs));
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     throw;
                 }
@@ -646,14 +649,7 @@ namespace DewCore.RestClient
                 string queryArgs = "";
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -667,7 +663,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     throw;
                 }
@@ -695,14 +691,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -716,7 +705,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     throw;
                 }
@@ -744,14 +733,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -765,7 +747,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse); ;
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     throw;
                 }
@@ -793,14 +775,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = httpClient.DefaultRequestHeaders;
-                    if (headers != null)
-                    {
-                        foreach (var item in headers)
-                        {
-                            headersCollection.Add(item.Key, item.Value);
-                        }
-                    }
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -814,7 +789,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     throw;
                 }
@@ -863,6 +838,12 @@ namespace DewCore.RestClient
                     }
             }
             return response;
+        }
+        public RESTClient() { }
+        public RESTClient(HeadersValidation h) { }
+        public void SetValidation(HeadersValidation h)
+        {
+            this.doValidation = h;
         }
     }
     /// <summary>
