@@ -523,7 +523,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    throw;
                 }
             }
             return response;
@@ -573,7 +573,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message); ;
+                    throw;
                 }
             }
             return response;
@@ -622,7 +622,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message); ;
+                    throw;
                 }
             }
             return response;
@@ -669,7 +669,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message); ;
+                    throw;
                 }
             }
             return response;
@@ -718,7 +718,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message); ;
+                    throw;
                 }
             }
             return response;
@@ -767,7 +767,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message); ;
+                    throw;
                 }
             }
             return response;
@@ -816,7 +816,7 @@ namespace DewCore.RestClient
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message); ;
+                    throw;
                 }
             }
             return response;
