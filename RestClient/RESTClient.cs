@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net    ;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace DewCore.RestClient
@@ -463,10 +463,10 @@ namespace DewCore.RestClient
     {
         private HeadersValidation doValidation = HeadersValidation.Yes;
 
-        private HttpRequestHeaders SetHeaders(HttpRequestHeaders headers, Dictionary<string,string> myHeaders)
+        private HttpRequestHeaders SetHeaders(HttpRequestHeaders headers, Dictionary<string, string> myHeaders)
         {
             var headersCollection = headers;
-            if (headers != null)
+            if (myHeaders != null)
             {
                 foreach (var item in myHeaders)
                 {
@@ -533,7 +533,7 @@ namespace DewCore.RestClient
                     throw new ArgumentException("The current url is not valid");
                 try
                 {
-                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders,headers);
+                    headersCollection = SetHeaders(httpClient.DefaultRequestHeaders, headers);
                     if (args != null)
                     {
                         queryArgs = "?";
@@ -590,7 +590,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs));
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }
@@ -632,7 +632,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs));
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }
@@ -672,7 +672,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }
@@ -714,7 +714,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }
@@ -756,7 +756,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse); ;
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }
@@ -778,7 +778,7 @@ namespace DewCore.RestClient
             IRESTResponse response = null;
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpRequestHeaders headersCollection = null;    
+                HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
                 if (!this.IsValidUrl(url))
                     throw new ArgumentException("The current url is not valid");
@@ -798,7 +798,7 @@ namespace DewCore.RestClient
                     HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content);
                     response = this.GetRESTResponse(httpResponse);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }
@@ -856,7 +856,10 @@ namespace DewCore.RestClient
         /// Constructor
         /// </summary>
         /// <param name="h"></param>
-        public RESTClient(HeadersValidation h) { }
+        public RESTClient(HeadersValidation h)
+        {
+            this.doValidation = h;
+        }
         /// <summary>
         /// Set yes if you want validation when set headers
         /// </summary>
