@@ -8,9 +8,18 @@ using System.Net.Http.Headers;
 
 namespace DewCore.RestClient
 {
+    /// <summary>
+    /// Http header validation type
+    /// </summary>
     public enum HeadersValidation
     {
+        /// <summary>
+        /// Yes
+        /// </summary>
         Yes,
+        /// <summary>
+        /// No
+        /// </summary>
         No
     }
     /// <summary>
@@ -839,8 +848,19 @@ namespace DewCore.RestClient
             }
             return response;
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public RESTClient() { }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="h"></param>
         public RESTClient(HeadersValidation h) { }
+        /// <summary>
+        /// Set yes if you want validation when set headers
+        /// </summary>
+        /// <param name="h"></param>
         public void SetValidation(HeadersValidation h)
         {
             this.doValidation = h;
