@@ -9,6 +9,9 @@ using DewInterfaces.DewRestClient;
 
 namespace DewCore.RestClient
 {
+    /// <summary>
+    /// Response object
+    /// </summary>
     public class RESTResponse : IRESTResponse, IDisposable
     {
         /// <summary>
