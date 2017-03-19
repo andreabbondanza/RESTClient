@@ -26,4 +26,8 @@
     <MSBuild Projects="$(ProjectPath)" Properties="Configuration=Release;Platform=Any CPU" />
   </Target>
 
+  <ItemGroup>
+    <PackageReference Include="DewInterfaces" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>
