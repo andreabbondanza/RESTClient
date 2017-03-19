@@ -51,7 +51,7 @@ request.AddHeader("Accept", "application/json");
 RESTClient client = new RESTClient();
 using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
 {
-    var myJson = null;
+    string myJson = null;
     if(response.IsSuccesStatusCode())
         myJson = response.ReadResponseAsStringAsync();
     ...
@@ -70,15 +70,61 @@ headers.Add("Accept", "application/json");
 RESTClient client = new RESTClient();
 using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers))
 {
-    var myJson = null;
+    string myJson = null;
     if(response.IsSuccesStatusCode())
         myJson = response.ReadResponseAsStringAsync();
     ...
 }
 ````
 
+## Types
+- __RESTResponse__ : The response object
+- __RESTClient__ : The client object
+- __RESTRequest__ : Request object
+
+### RESTResponse
+- __GetStatusCode()__ : _HttpStatusCode_ - Return the status code.
+- __IsSuccessStatusCode()__ : _bool_ - True if the type is Success
+- __IsRedirectedStatusCode()__ : _bool_ - True if type is Redirect
+- __IsErrorStatusCode()__ : _bool_ - True if type is Error
+- __IsFaultStatusCode()__ : _bool_ - True if type is Fault
+- __GetHttpStatusCodeType__ : _HttpStatusType_ - Return the status code type. If you want the status code you can use the enum in System.Net
+- __ReadResponseAsStringAsync : _awaitable Task\<string\>_ - Return the response as a string
+- __GetRestResponse__ : _HttpResponseMessage_ - Get the direct response object
+- __RESTResponse(HttpResponseMessage)__ : _constructor_ - Construct a new RESTResponse object
+
+### RESTClient
+- __SetValidation(HeadersValidation)__ : _void_ - Set if the header must be validated before sending
+- __GetRESTResponse(HttpResponseMessage)__ : _IRESTResponse_ - Return a new RESTResèpmse object from the HttpResponseMessage
+- __IsValidUrl(string)__ : bool - Check if an url is valid
+- __RESTClient()__ : _constructor_
+- __RESTClient(HeadersValidation) : _constructor_
+- __PerformRequest(IRESTRequest)__ : _awaitable Task\<IRESTResponse\>_ - Perform a request by an IRESTRequest object
+- __PerformDeleteRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a delete request by an IRESTRequest object
+- __PerformPutRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a put request by an IRESTRequest object
+- __PerformPatchRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a patch request by an IRESTRequest object
+- __PerformPostRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a post request by an IRESTRequest object
+- __PerformGetRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a get request by an IRESTRequest object
+- __PerformHeadRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a head request by an IRESTRequest object
+- __PerformOptionsRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a options request by an IRESTRequest object      
+
+### RESTRequest
+- __AddContent(HttpContent)__ : _void_ - Add a content to the request
+- __AddHeader(string,string)__ : _void_ - Add new header to the request
+- __AddQueryArgs(string,string)__ : _void_ - Add a new argoument to the query string
+- __SetUrl(string)_ : _void_ - Set the url to the request
+- __IsValidUrl(string)__ : bool - Check if an url is valid
+- __GetMethod()__ : _Method_ - return the current method
+- __SetMethod(Method)__ : _void_ - return the current method
+- __GetHeaders()__ : _Dictionary\<string,string\>_ - Return the setted headers
+- __GetContent()__ : _HttpContent_ - Return the setted content
+- __GetQueryArgs()__ : _Dictionary\<string,string\>_ - Return the setted headers
+- __GetUrl()__ : _string_ - Return the request URL
+- __RESTRequest(string)__ : _constructor_ - Construct a RESTRequest with url
+- __RESTRequest()__ : _constructor_ 
+
 ## Note
-You can recompile the .NETStandard version with the .NET target you want. Be careful about the 1.6 target, for a roslyn bug you'll not be able to compile.
+
 
 ## NuGet
 You can find it on nuget with the name [DewRESTClient](https://www.nuget.org/packages/DewRESTClientStandard/)

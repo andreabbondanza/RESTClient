@@ -126,11 +126,6 @@ namespace DewCore.RestClient
             }
         }
 
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public RESTResponse() { }
         /// <summary>
         /// Constructor with args
         /// </summary>
