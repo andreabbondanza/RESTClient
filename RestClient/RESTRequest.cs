@@ -40,6 +40,23 @@ namespace DewCore.DewRestClient
             this.content = content;
         }
         /// <summary>
+        /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void AddMultipartFormDataContent(string key, string value)
+        {
+            if(this.content != null && this.content.GetType() != typeof(MultipartFormDataContent))
+            {
+                this.content = new MultipartFormDataContent();
+                (this.content as MultipartFormDataContent).Add(new StringContent(value), key);
+            }
+            else
+            {
+                (this.content as MultipartFormDataContent).Add(new StringContent(value), key);
+            }
+        }
+        /// <summary>
         /// Add header to the request
         /// </summary>
         /// <param name="key"></param>
