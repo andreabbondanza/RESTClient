@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net;
 using System.Net.Http.Headers;
 using DewInterfaces.DewRestClient;
-using DewInterfaces;
+using DewInterfaces.DewLogger;
 
 namespace DewCore.DewRestClient
 {
