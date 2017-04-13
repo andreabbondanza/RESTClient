@@ -46,12 +46,17 @@ namespace DewCore.DewRestClient
         /// <param name="value"></param>
         public void AddMultipartFormDataContent(string key, string value)
         {
-            if(this.content == null || this.content.GetType() != typeof(MultipartFormDataContent))
+            if (this.content == null)
             {
-                this.content = new MultipartFormDataContent();                
+                this.content = new MultipartFormDataContent();
             }
+            else
+                if (this.content.GetType() != typeof(MultipartFormDataContent))
+                {
+                    this.content = new MultipartFormDataContent();
+                }
             (this.content as MultipartFormDataContent).Add(new StringContent(value), key);
-            
+
         }
         /// <summary>
         /// Add header to the request
