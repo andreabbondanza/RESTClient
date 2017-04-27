@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using DewInterfaces.DewRestClient;
 using DewInterfaces.DewLogger;
+using System.Threading;
 
 namespace DewCore.DewRestClient
 {
@@ -54,6 +55,7 @@ namespace DewCore.DewRestClient
     /// </summary>
     public class RESTClient : IRESTClient
     {
+        private CancellationToken cancellationToken = default(CancellationToken);
         private static IDewLogger debugger = new DewDebug();
         /// <summary>
         /// Enable debug
@@ -62,7 +64,7 @@ namespace DewCore.DewRestClient
         private HeadersValidation doValidation = HeadersValidation.Yes;
         private void Log(string text)
         {
-            if(DebugOn)
+            if (DebugOn)
             {
                 debugger.WriteLine(text);
             }
@@ -157,7 +159,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the DELETE request
                     this.Log($"Performing DELETE Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs));
+                    HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs), this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -202,7 +204,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the GET request
                     this.Log($"Performing GET Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs));
+                    HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs), this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -246,7 +248,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the HEAD request
                     this.Log($"Performing HEAD Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs));
+                    HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs), this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -288,7 +290,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the OPTIONS request
                     this.Log($"Performing OPTIONS Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
+                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content, this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -332,7 +334,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the PATCH request
                     this.Log($"Performing PATCH Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content);
+                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content, this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -376,7 +378,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the POST request
                     this.Log($"Performing POST Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content);
+                    HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content, this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse); ;
                 }
@@ -420,7 +422,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the PUT request
                     this.Log($"Performing PUT Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content);
+                    HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content, this.cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -436,7 +438,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<IRESTResponse> PerformRequest(IRESTRequest request)
+        public async Task<IRESTResponse> PerformRequestAsync(IRESTRequest request)
         {
             IRESTResponse response = null;
             switch (request.GetMethod())
@@ -477,12 +479,14 @@ namespace DewCore.DewRestClient
         /// <summary>
         /// Constructor
         /// </summary>
-        public RESTClient() { }
+        /// <param name="cancellationToken"></param>
+        public RESTClient(CancellationToken cancellationToken = default(CancellationToken)) { }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="h"></param>
-        public RESTClient(HeadersValidation h)
+        /// <param name="cancellationToken"></param>
+        public RESTClient(HeadersValidation h, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.doValidation = h;
         }
