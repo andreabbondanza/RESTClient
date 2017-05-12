@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace DewCore.DewRestClient
 {
@@ -123,6 +124,22 @@ namespace DewCore.DewRestClient
             {
                 if (this.response != null) this.response.Dispose();
             }
+        }
+        /// <summary>
+        /// Return response body as stream
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Stream> ReadResponseAsStreamAsync()
+        {
+            return this.response.Content != null ? await this.response.Content.ReadAsStreamAsync() : null;
+        }
+        /// <summary>
+        /// Return response body as bytearray
+        /// </summary>
+        /// <returns></returns>
+        public async Task<byte[]> ReadResponseAsByteArrayAsync()
+        {
+            return this.response.Content != null ? await this.response.Content.ReadAsByteArrayAsync() : null;
         }
 
         /// <summary>

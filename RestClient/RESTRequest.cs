@@ -1,6 +1,7 @@
 ﻿using DewInterfaces.DewRestClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 
@@ -40,7 +41,7 @@ namespace DewCore.DewRestClient
             this.content = content;
         }
         /// <summary>
-        /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists
+        /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -51,13 +52,56 @@ namespace DewCore.DewRestClient
                 this.content = new MultipartFormDataContent();
             }
             else
+            {
                 if (this.content.GetType() != typeof(MultipartFormDataContent))
                 {
                     this.content = new MultipartFormDataContent();
                 }
+            }
             (this.content as MultipartFormDataContent).Add(new StringContent(value), key);
+        }
+        /// <summary>
+        /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void AddMultipartFormDataContent(string key, Stream value)
+        {
+            if (this.content == null)
+            {
+                this.content = new MultipartFormDataContent();
+            }
+            else
+            {
+                if (this.content.GetType() != typeof(MultipartFormDataContent))
+                {
+                    this.content = new MultipartFormDataContent();
+                }
+            }
+            (this.content as MultipartFormDataContent).Add(new StreamContent(value), key);
+        }
+        /// <summary>
+        /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void AddMultipartFormDataContent(string key, byte[] value)
+        {
+            if (this.content == null)
+            {
+                this.content = new MultipartFormDataContent();
+            }
+            else
+            {
+                if (this.content.GetType() != typeof(MultipartFormDataContent))
+                {
+                    this.content = new MultipartFormDataContent();
+                }
+            }
+            (this.content as MultipartFormDataContent).Add(new ByteArrayContent(value), key);
 
         }
+
         /// <summary>
         /// Add header to the request
         /// </summary>
