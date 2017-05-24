@@ -30,7 +30,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="DewInterfaces" />
+    <PackageReference Include="DewInterfaces"  />
   </ItemGroup>
 
 </Project>
