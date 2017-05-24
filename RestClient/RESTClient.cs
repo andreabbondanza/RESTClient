@@ -473,6 +473,11 @@ namespace DewCore.DewRestClient
                         response = await this.PerformHeadRequestAsync(request.GetUrl(), request.GetQueryArgs(), request.GetHeaders());
                         break;
                     }
+                case Method.DELETE:
+                    {
+                        response = await this.PerformDeleteRequestAsync(request.GetUrl(), request.GetQueryArgs(), request.GetHeaders());
+                        break;
+                    }
             }
             return response;
         }
