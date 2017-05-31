@@ -65,7 +65,8 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void AddMultipartFormDataContent(string key, Stream value)
+        /// <param name="fileName"></param>
+        public void AddMultipartFormDataContent(string key, Stream value, string fileName = "default")
         {
             if (this.content == null)
             {
@@ -78,14 +79,15 @@ namespace DewCore.DewRestClient
                     this.content = new MultipartFormDataContent();
                 }
             }
-            (this.content as MultipartFormDataContent).Add(new StreamContent(value), key);
+            (this.content as MultipartFormDataContent).Add(new StreamContent(value), key, fileName);
         }
         /// <summary>
         /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void AddMultipartFormDataContent(string key, byte[] value)
+        /// <param name="fileName"></param>
+        public void AddMultipartFormDataContent(string key, byte[] value, string fileName = "default")
         {
             if (this.content == null)
             {
@@ -98,7 +100,7 @@ namespace DewCore.DewRestClient
                     this.content = new MultipartFormDataContent();
                 }
             }
-            (this.content as MultipartFormDataContent).Add(new ByteArrayContent(value), key);
+            (this.content as MultipartFormDataContent).Add(new ByteArrayContent(value), key, fileName);
 
         }
 
