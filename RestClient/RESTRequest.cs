@@ -15,11 +15,11 @@ namespace DewCore.DewRestClient
         /// <summary>
         /// Headers
         /// </summary>
-        private Dictionary<string, string> headers = new Dictionary<string, string>();
+        private Dictionary<string, string> _headers = new Dictionary<string, string>();
         /// <summary>
         /// Query args
         /// </summary>
-        private Dictionary<string, string> queryArgs = new Dictionary<string, string>();
+        private Dictionary<string, string> _queryArgs = new Dictionary<string, string>();
         /// <summary>
         /// url
         /// </summary>
@@ -103,7 +103,6 @@ namespace DewCore.DewRestClient
             (this.content as MultipartFormDataContent).Add(new ByteArrayContent(value), key, fileName);
 
         }
-
         /// <summary>
         /// Add header to the request
         /// </summary>
@@ -111,7 +110,7 @@ namespace DewCore.DewRestClient
         /// <param name="value"></param>
         public void AddHeader(string key, string value)
         {
-            this.headers.Add(key, value);
+            this._headers.Add(key, value);
         }
         /// <summary>
         /// Add a query arg
@@ -120,7 +119,7 @@ namespace DewCore.DewRestClient
         /// <param name="value"></param>
         public void AddQueryArgs(string key, string value)
         {
-            this.queryArgs.Add(key, value);
+            this._queryArgs.Add(key, value);
         }
         /// <summary>
         /// Set the url
@@ -175,12 +174,12 @@ namespace DewCore.DewRestClient
             this.method = method;
         }
         /// <summary>
-        /// Return the headers
+        /// Return the _headers
         /// </summary>
         /// <returns></returns>
         public Dictionary<string, string> GetHeaders()
         {
-            return this.headers;
+            return this._headers;
         }
         /// <summary>
         /// Return the request content
@@ -196,7 +195,7 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public Dictionary<string, string> GetQueryArgs()
         {
-            return this.queryArgs;
+            return this._queryArgs;
         }
         /// <summary>
         /// Return the request url

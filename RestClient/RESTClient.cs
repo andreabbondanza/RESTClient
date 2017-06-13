@@ -55,8 +55,8 @@ namespace DewCore.DewRestClient
     /// </summary>
     public class RESTClient : IRESTClient
     {
-        private CancellationToken cancellationToken = default(CancellationToken);
-        private static IDewLogger debugger = new DewDebug();
+        private CancellationToken _cancellationToken = default(CancellationToken);
+        private static IDewLogger _debugger = new DewDebug();
         /// <summary>
         /// Enable debug
         /// </summary>
@@ -66,7 +66,7 @@ namespace DewCore.DewRestClient
         {
             if (DebugOn)
             {
-                debugger.WriteLine(text);
+                _debugger.WriteLine(text);
             }
         }
         /// <summary>
@@ -75,7 +75,7 @@ namespace DewCore.DewRestClient
         /// <param name="debugger"></param>
         public static void SetDebugger(IDewLogger debugger)
         {
-            RESTClient.debugger = debugger;
+            RESTClient._debugger = debugger;
         }
         private HttpRequestHeaders SetHeaders(HttpRequestHeaders headers, Dictionary<string, string> myHeaders)
         {
@@ -92,7 +92,6 @@ namespace DewCore.DewRestClient
             }
             return headersCollection;
         }
-
         /// <summary>
         /// Return an instance of IRESTResponse
         /// </summary>
@@ -102,7 +101,6 @@ namespace DewCore.DewRestClient
         {
             return new RESTResponse(httpResponseMessage);
         }
-
         /// <summary>
         /// Check if a string is a valid URL
         /// </summary>
@@ -132,7 +130,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The api url</param>
         /// <param name="args">The querystring args</param>
-        /// <param name="headers">The headers</param>
+        /// <param name="headers">The _headers</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
         /// <returns>RESTResponse, null if something goes wrong</returns>
@@ -159,7 +157,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the DELETE request
                     this.Log($"Performing DELETE Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs), this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.DeleteAsync(new Uri(url + queryArgs), this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -175,7 +173,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The api url</param>
         /// <param name="args">The querystring args</param>
-        /// <param name="headers">The headers</param>
+        /// <param name="headers">The _headers</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
         /// <returns>RESTResponse, null if something goes wrong</returns>
@@ -204,7 +202,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the GET request
                     this.Log($"Performing GET Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs), this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.GetAsync(new Uri(url + queryArgs), this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -220,7 +218,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The api url</param>
         /// <param name="args">The querystring args</param>
-        /// <param name="headers">The headers</param>
+        /// <param name="headers">The _headers</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
         /// <returns>RESTResponse, null if something goes wrong</returns>
@@ -248,7 +246,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the HEAD request
                     this.Log($"Performing HEAD Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs), this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.HeadAsync(new Uri(url + queryArgs), this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -264,7 +262,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The API Host url</param>
         /// <param name="args">Query string args</param>
-        /// <param name="headers">Dictionary of headers</param>
+        /// <param name="headers">Dictionary of _headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
@@ -290,7 +288,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the OPTIONS request
                     this.Log($"Performing OPTIONS Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content, this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -306,7 +304,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The API Host url</param>
         /// <param name="args">Query string args</param>
-        /// <param name="headers">Dictionary of headers</param>
+        /// <param name="headers">Dictionary of _headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
@@ -334,7 +332,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the PATCH request
                     this.Log($"Performing PATCH Request to: {url} with args:{queryArgs}");
-                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content, this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.PatchAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -350,7 +348,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The API Host url</param>
         /// <param name="args">Query string args</param>
-        /// <param name="headers">Dictionary of headers</param>
+        /// <param name="headers">Dictionary of _headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
@@ -376,9 +374,10 @@ namespace DewCore.DewRestClient
                         }
                         queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
                     }
+                    
                     //Send the POST request
                     this.Log($"Performing POST Request to: {url} with args:{await content.ReadAsStringAsync()}");
-                    HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content, this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse); ;
                 }
@@ -394,7 +393,7 @@ namespace DewCore.DewRestClient
         /// </summary>
         /// <param name="url">The API Host url</param>
         /// <param name="args">Query string args</param>
-        /// <param name="headers">Dictionary of headers</param>
+        /// <param name="headers">Dictionary of _headers</param>
         /// <param name="content">The message content</param>
         /// <exception cref="ArgumentException">The url is not valid</exception>
         /// <exception cref="InvalidOperationException">Probably misused header value</exception>
@@ -422,7 +421,7 @@ namespace DewCore.DewRestClient
                     }
                     //Send the PUT request
                     this.Log($"Performing PUT Request to: {url} with args:{await content.ReadAsStringAsync()}");
-                    HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content, this.cancellationToken);
+                    HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
                 }
@@ -496,7 +495,7 @@ namespace DewCore.DewRestClient
             this.doValidation = h;
         }
         /// <summary>
-        /// Set yes if you want validation when set headers
+        /// Set yes if you want validation when set _headers
         /// </summary>
         /// <param name="h"></param>
         public void SetValidation(HeadersValidation h)

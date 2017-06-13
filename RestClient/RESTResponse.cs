@@ -17,17 +17,17 @@ namespace DewCore.DewRestClient
         /// <summary>
         /// The HttpResponseMessage object
         /// </summary>
-        private HttpResponseMessage response = null;
+        private HttpResponseMessage _response = null;
         /// <summary>
-        /// Get the response status code
+        /// Get the _response status code
         /// </summary>
         /// <exception cref="NullReferenceException">If Response object is null</exception>
         /// <returns></returns>
         public HttpStatusCode GetStatusCode()
         {
-            if (this.response == null)
+            if (this._response == null)
                 throw new NullReferenceException();
-            return this.response.StatusCode;
+            return this._response.StatusCode;
         }
         /// <summary>
         /// Check if the status code is succesful 
@@ -36,9 +36,9 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public bool IsSuccesStatusCode()
         {
-            if (this.response == null)
+            if (this._response == null)
                 throw new NullReferenceException();
-            return (int)this.response.StatusCode >= 200 && (int)this.response.StatusCode < 300;
+            return (int)this._response.StatusCode >= 200 && (int)this._response.StatusCode < 300;
         }
         /// <summary>
         /// Check if the status code is redirect
@@ -47,9 +47,9 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public bool IsRedirectedStatusCode()
         {
-            if (this.response == null)
+            if (this._response == null)
                 throw new NullReferenceException();
-            return (int)this.response.StatusCode >= 300 && (int)this.response.StatusCode < 400;
+            return (int)this._response.StatusCode >= 300 && (int)this._response.StatusCode < 400;
         }
         /// <summary>
         /// Check if the status code is an error
@@ -58,9 +58,9 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public bool IsErrorStatusCode()
         {
-            if (this.response == null)
+            if (this._response == null)
                 throw new NullReferenceException();
-            return (int)this.response.StatusCode >= 400 && (int)this.response.StatusCode < 500;
+            return (int)this._response.StatusCode >= 400 && (int)this._response.StatusCode < 500;
         }
         /// <summary>
         /// Check if the status code is a fault
@@ -69,9 +69,9 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public bool IsFaultStatusCode()
         {
-            if (this.response == null)
+            if (this._response == null)
                 throw new NullReferenceException();
-            return (int)this.response.StatusCode >= 500 && (int)this.response.StatusCode < 600;
+            return (int)this._response.StatusCode >= 500 && (int)this._response.StatusCode < 600;
         }
         /// <summary>
         /// Return the http status type
@@ -90,12 +90,12 @@ namespace DewCore.DewRestClient
             return result;
         }
         /// <summary>
-        /// Return response body as string
+        /// Return _response body as string
         /// </summary>
         /// <returns></returns>
         public async Task<string> ReadResponseAsStringAsync()
         {
-            return this.response.Content != null ? await this.response.Content.ReadAsStringAsync() : null;
+            return this._response.Content != null ? await this._response.Content.ReadAsStringAsync() : null;
         }
         /// <summary>
         /// Return directly the HttpResponseMessage
@@ -103,7 +103,7 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public HttpResponseMessage GetHttpResponse()
         {
-            return this.response;
+            return this._response;
         }
         /// <summary>
         /// Dispose object
@@ -122,24 +122,24 @@ namespace DewCore.DewRestClient
         {
             if (disposing)
             {
-                if (this.response != null) this.response.Dispose();
+                if (this._response != null) this._response.Dispose();
             }
         }
         /// <summary>
-        /// Return response body as stream
+        /// Return _response body as stream
         /// </summary>
         /// <returns></returns>
         public async Task<Stream> ReadResponseAsStreamAsync()
         {
-            return this.response.Content != null ? await this.response.Content.ReadAsStreamAsync() : null;
+            return this._response.Content != null ? await this._response.Content.ReadAsStreamAsync() : null;
         }
         /// <summary>
-        /// Return response body as bytearray
+        /// Return _response body as bytearray
         /// </summary>
         /// <returns></returns>
         public async Task<byte[]> ReadResponseAsByteArrayAsync()
         {
-            return this.response.Content != null ? await this.response.Content.ReadAsByteArrayAsync() : null;
+            return this._response.Content != null ? await this._response.Content.ReadAsByteArrayAsync() : null;
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace DewCore.DewRestClient
         /// <param name="response">The HttpResponseMessage</param>
         public RESTResponse(HttpResponseMessage response)
         {
-            this.response = response;
+            this._response = response;
         }
     }
 }
