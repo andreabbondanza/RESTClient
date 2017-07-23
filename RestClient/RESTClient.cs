@@ -56,12 +56,17 @@ namespace DewCore.DewRestClient
     public class RESTClient : IRESTClient
     {
         private CancellationToken _cancellationToken = default(CancellationToken);
+        private HttpClientHandler handler = null;
         private static IDewLogger _debugger = new DewDebug();
         /// <summary>
         /// Enable debug
         /// </summary>
         public static bool DebugOn = false;
         private HeadersValidation doValidation = HeadersValidation.Yes;
+        private HttpClient GetClient()
+        {
+            return handler != null ? new HttpClient(handler) : new HttpClient();
+        }
         private void Log(string text)
         {
             if (DebugOn)
@@ -137,7 +142,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformDeleteRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -181,7 +186,7 @@ namespace DewCore.DewRestClient
         {
 
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -225,7 +230,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformHeadRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null)
         {
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -270,7 +275,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformOptionsRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -312,7 +317,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformPatchRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -356,7 +361,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformPostRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -374,7 +379,7 @@ namespace DewCore.DewRestClient
                         }
                         queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
                     }
-                    
+
                     //Send the POST request
                     this.Log($"Performing POST Request to: {url} with args:{await content.ReadAsStringAsync()}");
                     HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content, this._cancellationToken);
@@ -401,7 +406,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformPutRequestAsync(string url, Dictionary<string, string> args = null, Dictionary<string, string> headers = null, HttpContent content = null)
         {
             IRESTResponse response = null;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = GetClient())
             {
                 HttpRequestHeaders headersCollection = null;
                 string queryArgs = "";
@@ -440,6 +445,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformRequestAsync(IRESTRequest request)
         {
             IRESTResponse response = null;
+            handler = request.GetHandler();
             switch (request.GetMethod())
             {
                 case Method.POST:

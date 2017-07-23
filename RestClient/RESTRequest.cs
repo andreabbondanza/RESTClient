@@ -33,6 +33,10 @@ namespace DewCore.DewRestClient
         /// </summary>
         private Method method = Method.GET;
         /// <summary>
+        /// Represent the http message handler used to certificate the request
+        /// </summary>
+        private HttpClientHandler handler = null;
+        /// <summary>
         /// Add the content to the request
         /// </summary>
         /// <param name="content"></param>
@@ -205,6 +209,23 @@ namespace DewCore.DewRestClient
         {
             return this.url;
         }
+        /// <summary>
+        /// Set the http message handler
+        /// </summary>
+        /// <param name="handler"></param>
+        public void SetHandler(HttpClientHandler handler)
+        {
+            this.handler = handler;
+        }
+        /// <summary>
+        /// Return the current http message handler
+        /// </summary>
+        /// <returns></returns>
+        public HttpClientHandler GetHandler()
+        {
+            return handler;
+        }
+
         /// <summary>
         /// Constructor with url
         /// </summary>
