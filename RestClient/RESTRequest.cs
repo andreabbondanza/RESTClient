@@ -1,4 +1,4 @@
-﻿using DewInterfaces.DewRestClient;
+﻿using RestClient.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,26 +23,26 @@ namespace DewCore.DewRestClient
         /// <summary>
         /// url
         /// </summary>
-        private string url = "";
+        private string _url = "";
         /// <summary>
         /// Content
         /// </summary>
-        private HttpContent content = null;
+        private HttpContent _content = null;
         /// <summary>
         /// Method
         /// </summary>
-        private Method method = Method.GET;
+        private Method _method = Method.GET;
         /// <summary>
         /// Represent the http message handler used to certificate the request
         /// </summary>
-        private HttpClientHandler handler = null;
+        private RESTCertificate _handler = null;
         /// <summary>
         /// Add the content to the request
         /// </summary>
         /// <param name="content"></param>
         public void AddContent(HttpContent content)
         {
-            this.content = content;
+            this._content = content;
         }
         /// <summary>
         /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
@@ -51,18 +51,18 @@ namespace DewCore.DewRestClient
         /// <param name="value"></param>
         public void AddMultipartFormDataContent(string key, string value)
         {
-            if (this.content == null)
+            if (this._content == null)
             {
-                this.content = new MultipartFormDataContent();
+                this._content = new MultipartFormDataContent();
             }
             else
             {
-                if (this.content.GetType() != typeof(MultipartFormDataContent))
+                if (this._content.GetType() != typeof(MultipartFormDataContent))
                 {
-                    this.content = new MultipartFormDataContent();
+                    this._content = new MultipartFormDataContent();
                 }
             }
-            (this.content as MultipartFormDataContent).Add(new StringContent(value), key);
+            (this._content as MultipartFormDataContent).Add(new StringContent(value), key);
         }
         /// <summary>
         /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
@@ -72,18 +72,18 @@ namespace DewCore.DewRestClient
         /// <param name="fileName"></param>
         public void AddMultipartFormDataContent(string key, Stream value, string fileName = "default")
         {
-            if (this.content == null)
+            if (this._content == null)
             {
-                this.content = new MultipartFormDataContent();
+                this._content = new MultipartFormDataContent();
             }
             else
             {
-                if (this.content.GetType() != typeof(MultipartFormDataContent))
+                if (this._content.GetType() != typeof(MultipartFormDataContent))
                 {
-                    this.content = new MultipartFormDataContent();
+                    this._content = new MultipartFormDataContent();
                 }
             }
-            (this.content as MultipartFormDataContent).Add(new StreamContent(value), key, fileName);
+            (this._content as MultipartFormDataContent).Add(new StreamContent(value), key, fileName);
         }
         /// <summary>
         /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
@@ -93,18 +93,18 @@ namespace DewCore.DewRestClient
         /// <param name="fileName"></param>
         public void AddMultipartFormDataContent(string key, byte[] value, string fileName = "default")
         {
-            if (this.content == null)
+            if (this._content == null)
             {
-                this.content = new MultipartFormDataContent();
+                this._content = new MultipartFormDataContent();
             }
             else
             {
-                if (this.content.GetType() != typeof(MultipartFormDataContent))
+                if (this._content.GetType() != typeof(MultipartFormDataContent))
                 {
-                    this.content = new MultipartFormDataContent();
+                    this._content = new MultipartFormDataContent();
                 }
             }
-            (this.content as MultipartFormDataContent).Add(new ByteArrayContent(value), key, fileName);
+            (this._content as MultipartFormDataContent).Add(new ByteArrayContent(value), key, fileName);
 
         }
         /// <summary>
@@ -133,7 +133,7 @@ namespace DewCore.DewRestClient
         public void SetUrl(string url)
         {
             if (IsValidUrl(url))
-                this.url = url;
+                this._url = url;
             else
                 throw new UriFormatException();
         }
@@ -167,7 +167,7 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public Method GetMethod()
         {
-            return this.method;
+            return this._method;
         }
         /// <summary>
         /// Set the method
@@ -175,7 +175,7 @@ namespace DewCore.DewRestClient
         /// <param name="method"></param>
         public void SetMethod(Method method)
         {
-            this.method = method;
+            this._method = method;
         }
         /// <summary>
         /// Return the _headers
@@ -191,7 +191,7 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public HttpContent GetContent()
         {
-            return this.content;
+            return this._content;
         }
         /// <summary>
         /// Get the query args
@@ -207,15 +207,23 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public string GetUrl()
         {
-            return this.url;
+            return this._url;
         }
         /// <summary>
         /// Set the http message handler
         /// </summary>
         /// <param name="handler"></param>
-        public void SetHandler(HttpClientHandler handler)
+        public void SetHandler(RESTCertificateAbstract handler)
         {
-            this.handler = handler;
+            var myhandler = handler as RESTCertificate;
+            this._handler = myhandler;
+            if (myhandler.Handler.ClientCertificates.Count == 0)
+            {
+                foreach (var item in myhandler.Certs)
+                {
+                    myhandler.Handler.ClientCertificates.Add(item);
+                }
+            }
         }
         /// <summary>
         /// Return the current http message handler
@@ -223,7 +231,7 @@ namespace DewCore.DewRestClient
         /// <returns></returns>
         public HttpClientHandler GetHandler()
         {
-            return handler;
+            return _handler.Handler;
         }
 
         /// <summary>

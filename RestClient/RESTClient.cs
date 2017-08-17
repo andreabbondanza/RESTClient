@@ -4,59 +4,20 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using DewInterfaces.DewRestClient;
-using DewInterfaces.DewLogger;
 using System.Threading;
+using RestClient.Interfaces;
+using DewLogger.Interfaces;
+using DewCore.DewLogger;
 
 namespace DewCore.DewRestClient
 {
-    /// <summary>
-    /// Log into debug output
-    /// </summary>
-    public class DewDebug : IDewLogger
-    {
-        /// <summary>
-        /// Write text
-        /// </summary>
-        /// <param name="text"></param>
-        public void Write(string text)
-        {
-            Debug.Write(text);
-        }
-        /// <summary>
-        /// Write formatted text
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="args"></param>
-        public void Write(string text, object[] args)
-        {
-            Debug.Write(String.Format(text, args));
-        }
-        /// <summary>
-        /// Write text and new line
-        /// </summary>
-        /// <param name="text"></param>
-        public void WriteLine(string text)
-        {
-            Debug.WriteLine(text);
-        }
-        /// <summary>
-        /// Write formatted text and new line
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="args"></param>
-        public void WriteLine(string text, object[] args)
-        {
-            Debug.Write(String.Format(text, args));
-        }
-    }
     /// <summary>
     /// RESTClient class - a class for REST Requests
     /// </summary>
     public class RESTClient : IRESTClient
     {
         private CancellationToken _cancellationToken = default(CancellationToken);
-        private HttpClientHandler handler = null;
+        private HttpClientHandler _handler = null;
         private static IDewLogger _debugger = new DewDebug();
         /// <summary>
         /// Enable debug
@@ -65,7 +26,7 @@ namespace DewCore.DewRestClient
         private HeadersValidation doValidation = HeadersValidation.Yes;
         private HttpClient GetClient()
         {
-            return handler != null ? new HttpClient(handler) : new HttpClient();
+            return _handler != null ? new HttpClient(_handler) : new HttpClient();
         }
         private void Log(string text)
         {
@@ -445,7 +406,7 @@ namespace DewCore.DewRestClient
         public async Task<IRESTResponse> PerformRequestAsync(IRESTRequest request)
         {
             IRESTResponse response = null;
-            handler = request.GetHandler();
+            _handler = request.GetHandler();
             switch (request.GetMethod())
             {
                 case Method.POST:
