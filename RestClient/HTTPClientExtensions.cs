@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DewCore.DewRestClient
+namespace DewCore.RestClient.Extensions
 {
     /// <summary>
     /// Extend the wrappers for httpclient

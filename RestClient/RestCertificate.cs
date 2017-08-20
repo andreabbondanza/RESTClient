@@ -1,11 +1,11 @@
-﻿using RestClient.Interfaces;
+﻿using DewCore.Abstract.RestClient;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace DewCore.DewRestClient
+namespace DewCore.RestClient
 {
     /// <summary>
     /// Certificates for DewRESTClient
@@ -34,6 +34,19 @@ namespace DewCore.DewRestClient
         public HttpClientHandler Handler
         {
             get { return _handler; }
+            set { _handler = value; }
+        }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public RESTCertificate() { }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="handler"></param>
+        public RESTCertificate(HttpClientHandler handler)
+        {
+            this._handler = handler;
         }
     }
 }

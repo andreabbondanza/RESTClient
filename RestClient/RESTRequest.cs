@@ -1,11 +1,11 @@
-﻿using RestClient.Interfaces;
+﻿using DewCore.Abstract.RestClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 
-namespace DewCore.DewRestClient
+namespace DewCore.RestClient
 {
     /// <summary>
     /// REST Request class

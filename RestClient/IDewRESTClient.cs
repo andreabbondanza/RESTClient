@@ -1,5 +1,4 @@
-﻿using DewCore.DewRestClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -7,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestClient.Interfaces
+namespace DewCore.Abstract.RestClient
 {
     /// <summary>
     /// Abstract class for certificates

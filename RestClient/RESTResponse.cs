@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using RestClient.Interfaces;
+using DewCore.Abstract.RestClient;
 
-namespace DewCore.DewRestClient
+namespace DewCore.RestClient
 {
     /// <summary>
     /// Response object

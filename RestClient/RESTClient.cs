@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
-using RestClient.Interfaces;
-using DewLogger.Interfaces;
-using DewCore.DewLogger;
+using DewCore.Abstract.RestClient;
+using DewCore.RestClient.Extensions;
+using DewCore.Abstract.Logger;
+using DewCore.Logger;
 
-namespace DewCore.DewRestClient
+namespace DewCore.RestClient
 {
     /// <summary>
     /// RESTClient class - a class for REST Requests
@@ -18,7 +19,7 @@ namespace DewCore.DewRestClient
     {
         private CancellationToken _cancellationToken = default(CancellationToken);
         private HttpClientHandler _handler = null;
-        private static IDewLogger _debugger = new DewDebug();
+        private static ILogger _debugger = new DewDebug();
         /// <summary>
         /// Enable debug
         /// </summary>
@@ -39,7 +40,7 @@ namespace DewCore.DewRestClient
         /// Set logger
         /// </summary>
         /// <param name="debugger"></param>
-        public static void SetDebugger(IDewLogger debugger)
+        public static void SetDebugger(ILogger debugger)
         {
             RESTClient._debugger = debugger;
         }
