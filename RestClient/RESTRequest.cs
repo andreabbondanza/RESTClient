@@ -231,7 +231,7 @@ namespace DewCore.RestClient
         /// <returns></returns>
         public HttpClientHandler GetHandler()
         {
-            return _handler.Handler;
+            return _handler?.Handler;
         }
 
         /// <summary>
