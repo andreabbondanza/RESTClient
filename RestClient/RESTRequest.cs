@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 
@@ -12,6 +13,10 @@ namespace DewCore.RestClient
     /// </summary>
     public class RESTRequest : IRESTRequest
     {
+        /// <summary>
+        /// Cookies
+        /// </summary>
+        private CookieCollection _cookieCollection = new CookieCollection();
         /// <summary>
         /// Headers
         /// </summary>
@@ -43,6 +48,25 @@ namespace DewCore.RestClient
         public void AddContent(HttpContent content)
         {
             this._content = content;
+        }
+        /// <summary>
+        /// Add cookie to request
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <param name="domain"></param>
+        public void AddCookie(string name, string value, string path, string domain)
+        {
+            _cookieCollection.Add(new Cookie(name, value, path, domain));
+        }
+        /// <summary>
+        /// Return cookie collection
+        /// </summary>
+        /// <returns></returns>
+        public CookieCollection GetCookieCollection()
+        {
+            return _cookieCollection;
         }
         /// <summary>
         /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData

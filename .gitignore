@@ -252,3 +252,5 @@ paket-files/
 *.sln.iml
 /NETStandardVersion/DewRESTClientStandard.nuspec
 *.nuspec
+/Test
+/WebApplication1

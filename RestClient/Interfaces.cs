@@ -169,6 +169,19 @@ namespace DewCore.Abstract.RestClient
         /// <param name="httpResponseMessage"></param>
         /// <returns></returns>
         IRESTResponse GetRESTResponse(HttpResponseMessage httpResponseMessage);
+        /// <summary>
+        /// Get a cookie
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="baseUrl"></param>
+        /// <returns></returns>
+        Cookie GetCookie(string key, string baseUrl);
+        /// <summary>
+        /// Get a cookie
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <returns></returns>
+        CookieCollection GetCookies(string baseUrl);
     }
     /// <summary>
     /// Response interface
@@ -201,13 +214,25 @@ namespace DewCore.Abstract.RestClient
         /// </summary>
         /// <returns></returns>
         Task<byte[]> ReadResponseAsByteArrayAsync();
-
     }
     /// <summary>
     /// Request object interface
     /// </summary>
     public interface IRESTRequest
     {
+        /// <summary>
+        /// Set cookie
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="path"></param>
+        /// <param name="domain"></param>
+        void AddCookie(string name, string value, string path, string domain);
+        /// <summary>
+        /// Get cookie collection
+        /// </summary>
+        /// <returns></returns>
+        CookieCollection GetCookieCollection();
         /// <summary>
         /// Set a http message handler
         /// </summary>

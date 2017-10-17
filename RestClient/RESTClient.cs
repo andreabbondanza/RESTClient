@@ -9,6 +9,8 @@ using DewCore.Abstract.RestClient;
 using DewCore.RestClient.Extensions;
 using DewCore.Abstract.Logger;
 using DewCore.Logger;
+using System.Net;
+using System.Linq;
 
 namespace DewCore.RestClient
 {
@@ -17,6 +19,7 @@ namespace DewCore.RestClient
     /// </summary>
     public class RESTClient : IRESTClient
     {
+        private CookieContainer _cookieContainer = new CookieContainer();
         private CancellationToken _cancellationToken = default(CancellationToken);
         private HttpClientHandler _handler = null;
         private static ILogger _debugger = new DewDebug();
@@ -29,12 +32,49 @@ namespace DewCore.RestClient
         {
             return _handler != null ? new HttpClient(_handler) : new HttpClient();
         }
+        private void SetCookies(CookieCollection coll, string url)
+        {
+            if (coll.Count > 0)
+            {
+                if (_handler == null)
+                    _handler = new HttpClientHandler();
+                _handler.CookieContainer = new CookieContainer();
+                var uri = new Uri(url);
+                string baseUrl = uri.Scheme + "//" + uri.Host + ":" + uri.Port;
+                _handler.CookieContainer.Add(new Uri(baseUrl), coll);
+            }
+        }
         private void Log(string text)
         {
             if (DebugOn)
             {
                 _debugger.WriteLine(text);
             }
+        }
+        /// <summary>
+        /// Get cookie
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="baseUrl"></param>
+        /// <returns></returns>
+        public Cookie GetCookie(string key, string baseUrl)
+        {
+            foreach (var item in _cookieContainer.GetCookies(new Uri(baseUrl)))
+            {
+                var c = item as Cookie;
+                if (c.Name == key)
+                    return c;
+            };
+            return null;
+        }
+        /// <summary>
+        /// Get cookie
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <returns></returns>
+        public CookieCollection GetCookies(string baseUrl)
+        {
+            return _cookieContainer.GetCookies(new Uri(baseUrl));
         }
         /// <summary>
         /// Set logger
@@ -68,6 +108,7 @@ namespace DewCore.RestClient
         {
             return new RESTResponse(httpResponseMessage);
         }
+
         /// <summary>
         /// Check if a string is a valid URL
         /// </summary>
@@ -343,7 +384,7 @@ namespace DewCore.RestClient
                     }
 
                     //Send the POST request
-                    this.Log($"Performing POST Request to: {url} with args:{await content.ReadAsStringAsync()}");
+                    this.Log($"Performing POST Request to: {url} with args:{await content?.ReadAsStringAsync()}");
                     HttpResponseMessage httpResponse = await httpClient.PostAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse); ;
@@ -387,7 +428,7 @@ namespace DewCore.RestClient
                         queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
                     }
                     //Send the PUT request
-                    this.Log($"Performing PUT Request to: {url} with args:{await content.ReadAsStringAsync()}");
+                    this.Log($"Performing PUT Request to: {url} with args:{await content?.ReadAsStringAsync()}");
                     HttpResponseMessage httpResponse = await httpClient.PutAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                     this.Log($"With response status code: {httpResponse.StatusCode}");
                     response = this.GetRESTResponse(httpResponse);
@@ -408,6 +449,7 @@ namespace DewCore.RestClient
         {
             IRESTResponse response = null;
             _handler = request.GetHandler();
+            SetCookies(request.GetCookieCollection(), request.GetUrl());
             switch (request.GetMethod())
             {
                 case Method.POST:
