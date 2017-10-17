@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DewCore.Abstract.RestClient
 {
-    /// <summary>
-    /// Abstract class for certificates
-    /// </summary>
-    public abstract class RESTCertificateAbstract
-    {
-
-    }
     /// <summary>
     /// Http header validation type
     /// </summary>
@@ -229,6 +223,16 @@ namespace DewCore.Abstract.RestClient
         /// <param name="domain"></param>
         void AddCookie(string name, string value, string path, string domain);
         /// <summary>
+        /// Add certificate to request
+        /// </summary>
+        /// <param name="cert"></param>
+        void InsertX509Certificate(X509Certificate cert);
+        /// <summary>
+        /// Add certificate to request
+        /// </summary>
+        /// <param name="cert"></param>
+        void RemoveX509Certificate(X509Certificate cert);
+        /// <summary>
         /// Get cookie collection
         /// </summary>
         /// <returns></returns>
@@ -237,7 +241,7 @@ namespace DewCore.Abstract.RestClient
         /// Set a http message handler
         /// </summary>
         /// <param name="handler"></param>
-        void SetHandler(RESTCertificateAbstract handler);
+        void SetHandler(HttpClientHandler handler);
         /// <summary>
         /// Return the http message handler
         /// </summary>

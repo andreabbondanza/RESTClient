@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace DewCore.RestClient
@@ -40,7 +41,7 @@ namespace DewCore.RestClient
         /// <summary>
         /// Represent the http message handler used to certificate the request
         /// </summary>
-        private RESTCertificate _handler = null;
+        private HttpClientHandler _handler = null;
         /// <summary>
         /// Add the content to the request
         /// </summary>
@@ -49,6 +50,31 @@ namespace DewCore.RestClient
         {
             this._content = content;
         }
+        ///// <summary>
+        ///// Get cookie
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="baseUrl"></param>
+        ///// <returns></returns>
+        //public Cookie GetCookie(string key, string baseUrl)
+        //{
+        //    foreach (var item in _cookieContainer.GetCookies(new Uri(baseUrl)))
+        //    {
+        //        var c = item as Cookie;
+        //        if (c.Name == key)
+        //            return c;
+        //    };
+        //    return null;
+        //}
+        ///// <summary>
+        ///// Get cookie
+        ///// </summary>
+        ///// <param name="baseUrl"></param>
+        ///// <returns></returns>
+        //public CookieCollection GetCookies(string baseUrl)
+        //{
+        //    return _cookieContainer.GetCookies(new Uri(baseUrl));
+        //}
         /// <summary>
         /// Add cookie to request
         /// </summary>
@@ -58,6 +84,15 @@ namespace DewCore.RestClient
         /// <param name="domain"></param>
         public void AddCookie(string name, string value, string path, string domain)
         {
+            if (_handler == null)
+            {
+                _handler = new HttpClientHandler() { CookieContainer = new CookieContainer() };
+            }
+            else
+            {
+                if (_handler.CookieContainer == null)
+                    _handler.CookieContainer = new CookieContainer();
+            }
             _cookieCollection.Add(new Cookie(name, value, path, domain));
         }
         /// <summary>
@@ -237,17 +272,33 @@ namespace DewCore.RestClient
         /// Set the http message handler
         /// </summary>
         /// <param name="handler"></param>
-        public void SetHandler(RESTCertificateAbstract handler)
+        public void SetHandler(HttpClientHandler handler)
         {
-            var myhandler = handler as RESTCertificate;
-            this._handler = myhandler;
-            if (myhandler.Handler.ClientCertificates.Count == 0)
+            _handler = handler;
+        }
+        /// <summary>
+        /// Add certificate to request
+        /// </summary>
+        /// <param name="cert"></param>
+        public void InsertX509Certificate(X509Certificate cert)
+        {
+            if (_handler == null)
             {
-                foreach (var item in myhandler.Certs)
-                {
-                    myhandler.Handler.ClientCertificates.Add(item);
-                }
+                _handler = new HttpClientHandler();
             }
+            _handler.ClientCertificates.Add(cert);
+        }
+        /// <summary>
+        /// Add certificate to request
+        /// </summary>
+        /// <param name="cert"></param>
+        public void RemoveX509Certificate(X509Certificate cert)
+        {
+            if (_handler == null)
+            {
+                _handler = new HttpClientHandler();
+            }
+            _handler.ClientCertificates.Remove(cert);
         }
         /// <summary>
         /// Return the current http message handler
@@ -255,7 +306,18 @@ namespace DewCore.RestClient
         /// <returns></returns>
         public HttpClientHandler GetHandler()
         {
-            return _handler?.Handler;
+            SetCookieContainer();
+            return _handler;
+        }
+
+        private void SetCookieContainer()
+        {
+            if (_cookieCollection.Count > 0)
+            {
+                var uri = new Uri(_url);
+                string baseUrl = uri.Scheme + "//" + uri.Host + ":" + uri.Port;
+                _handler.CookieContainer.Add(new Uri(baseUrl), _cookieCollection);
+            }
         }
 
         /// <summary>
