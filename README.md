@@ -89,13 +89,13 @@ using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(
 - __IsErrorStatusCode()__ : _bool_ - True if type is Error
 - __IsFaultStatusCode()__ : _bool_ - True if type is Fault
 - __GetHttpStatusCodeType__ : _HttpStatusType_ - Return the status code type. If you want the status code you can use the enum in System.Net
-- __ReadResponseAsStringAsync : _awaitable Task\<string\>_ - Return the response as a string
+- __ReadResponseAsStringAsync__ : _awaitable Task\<string\>_ - Return the response as a string
 - __GetRestResponse__ : _HttpResponseMessage_ - Get the direct response object
 - __RESTResponse(HttpResponseMessage)__ : _constructor_ - Construct a new RESTResponse object
 
 ### RESTClient
 - __SetValidation(HeadersValidation)__ : _void_ - Set if the header must be validated before sending
-- __GetRESTResponse(HttpResponseMessage)__ : _IRESTResponse_ - Return a new RESTResèpmse object from the HttpResponseMessage
+- __GetRESTResponse(HttpResponseMessage)__ : _IRESTResponse_ - Return a new RESTResÃ¨pmse object from the HttpResponseMessage
 - __IsValidUrl(string)__ : bool - Check if an url is valid
 - __RESTClient()__ : _constructor_
 - __RESTClient(HeadersValidation) : _constructor_
@@ -107,8 +107,6 @@ using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(
 - __PerformGetRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a get request by an IRESTRequest object
 - __PerformHeadRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a head request by an IRESTRequest object
 - __PerformOptionsRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a options request by an IRESTRequest object      
-- __GetCookie(string)__: _Cookie_ - Return the eventually response cookie, null if not exists
-- __GetCookies(string)__: _CookieCollection_ the response cookie collection of the passed domain
 
 ### RESTRequest
 - __AddContent(HttpContent)__ : _void_ - Add a content to the request
@@ -124,15 +122,8 @@ using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(
 - __GetUrl()__ : _string_ - Return the request URL
 - __RESTRequest(string)__ : _constructor_ - Construct a RESTRequest with url
 - __RESTRequest()__ : _constructor_ 
-- __AddCookie(string,string,string,string)__: _void_ - Add a cookie to handler
-- __GetCookieCollection__ : CookieCollection : Return the request collection of cookies
 - __AddX509Certificate(X509Certificate)__ : _void_ - Add a certificate to handler
 - __RemoveX509Certificate(X509Certificate)__ : _void_ - Remove a certificate from handler
-
-## Cookies
-
-If you want read the Request cookies, you should use the GetCookies from RESTRequest object.
-If you want read the response cookies, you must use the GetCookie/s method from RESTClient object.
 
 ## Note
 
