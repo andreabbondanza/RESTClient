@@ -30,7 +30,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="DewLogger" />
+    <PackageReference Include="DewLogger" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
