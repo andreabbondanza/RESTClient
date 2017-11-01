@@ -39,31 +39,6 @@ namespace DewCore.RestClient
             }
         }
         /// <summary>
-        /// Get cookie
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="baseUrl"></param>
-        /// <returns></returns>
-        public Cookie GetCookie(string key, string baseUrl)
-        {
-            if (_handler != null)
-            {
-                foreach (var item in _handler.CookieContainer.GetCookies(new Uri(baseUrl)))
-                {
-                    var c = item as Cookie;
-                    if (c.Name == key)
-                        return c;
-                };
-            }
-            return null;
-        }
-        /// <summary>
-        /// Get cookie
-        /// </summary>
-        /// <param name="baseUrl"></param>
-        /// <returns></returns>
-        public CookieCollection GetCookies(string baseUrl) => _handler?.CookieContainer.GetCookies(new Uri(baseUrl));
-        /// <summary>
         /// Set logger
         /// </summary>
         /// <param name="debugger"></param>

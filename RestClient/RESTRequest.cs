@@ -15,10 +15,6 @@ namespace DewCore.RestClient
     public class RESTRequest : IRESTRequest
     {
         /// <summary>
-        /// Cookies
-        /// </summary>
-        private CookieCollection _cookieCollection = new CookieCollection();
-        /// <summary>
         /// Headers
         /// </summary>
         private Dictionary<string, string> _headers = new Dictionary<string, string>();
@@ -49,59 +45,6 @@ namespace DewCore.RestClient
         public void AddContent(HttpContent content)
         {
             this._content = content;
-        }
-        ///// <summary>
-        ///// Get cookie
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="baseUrl"></param>
-        ///// <returns></returns>
-        //public Cookie GetCookie(string key, string baseUrl)
-        //{
-        //    foreach (var item in _cookieContainer.GetCookies(new Uri(baseUrl)))
-        //    {
-        //        var c = item as Cookie;
-        //        if (c.Name == key)
-        //            return c;
-        //    };
-        //    return null;
-        //}
-        ///// <summary>
-        ///// Get cookie
-        ///// </summary>
-        ///// <param name="baseUrl"></param>
-        ///// <returns></returns>
-        //public CookieCollection GetCookies(string baseUrl)
-        //{
-        //    return _cookieContainer.GetCookies(new Uri(baseUrl));
-        //}
-        /// <summary>
-        /// Add cookie to request
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="name"></param>
-        /// <param name="path"></param>
-        /// <param name="domain"></param>
-        public void AddCookie(string name, string value, string path, string domain)
-        {
-            if (_handler == null)
-            {
-                _handler = new HttpClientHandler() { CookieContainer = new CookieContainer() };
-            }
-            else
-            {
-                if (_handler.CookieContainer == null)
-                    _handler.CookieContainer = new CookieContainer();
-            }
-            _cookieCollection.Add(new Cookie(name, value, path, domain));
-        }
-        /// <summary>
-        /// Return cookie collection
-        /// </summary>
-        /// <returns></returns>
-        public CookieCollection GetCookieCollection()
-        {
-            return _cookieCollection;
         }
         /// <summary>
         /// Add a new MultipartFormDataContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for MultipartFormData
@@ -306,20 +249,8 @@ namespace DewCore.RestClient
         /// <returns></returns>
         public HttpClientHandler GetHandler()
         {
-            SetCookieContainer();
             return _handler;
         }
-
-        private void SetCookieContainer()
-        {
-            if (_cookieCollection.Count > 0)
-            {
-                var uri = new Uri(_url);
-                string baseUrl = uri.Scheme + "//" + uri.Host + ":" + uri.Port;
-                _handler.CookieContainer.Add(new Uri(baseUrl), _cookieCollection);
-            }
-        }
-
         /// <summary>
         /// Constructor with url
         /// </summary>
