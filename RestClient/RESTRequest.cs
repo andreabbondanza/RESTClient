@@ -1,4 +1,5 @@
-﻿using DewCore.Abstract.RestClient;
+﻿using DewCore.Abstract.Internet;
+using DewCore.Abstract.RestClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -114,7 +115,7 @@ namespace DewCore.RestClient
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void AddHeader(string key, string value)
+        public void SetHeader(string key, string value)
         {
             this._headers.Add(key, value);
         }
@@ -123,7 +124,7 @@ namespace DewCore.RestClient
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void AddQueryArgs(string key, string value)
+        public void SetQueryArgs(string key, string value)
         {
             this._queryArgs.Add(key, value);
         }
@@ -251,6 +252,15 @@ namespace DewCore.RestClient
         {
             return _handler;
         }
+        /// <summary>
+        /// Return request certificates collection
+        /// </summary>
+        /// <returns></returns>
+        public X509CertificateCollection GetCertificates()
+        {
+            return _handler?.ClientCertificates;
+        }
+
         /// <summary>
         /// Constructor with url
         /// </summary>

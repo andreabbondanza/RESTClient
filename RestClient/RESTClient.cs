@@ -6,11 +6,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using DewCore.Abstract.RestClient;
-using DewCore.RestClient.Extensions;
 using DewCore.Abstract.Logger;
 using DewCore.Logger;
 using System.Net;
 using System.Linq;
+using DewCore.Abstract.Internet;
+using DewCore.Extensions.Internet;
 
 namespace DewCore.RestClient
 {
@@ -70,7 +71,6 @@ namespace DewCore.RestClient
         {
             return new RESTResponse(httpResponseMessage);
         }
-
         /// <summary>
         /// Check if a string is a valid URL
         /// </summary>
@@ -472,6 +472,11 @@ namespace DewCore.RestClient
         public void SetValidation(HeadersValidation h)
         {
             this.doValidation = h;
+        }
+
+        public IRESTResponse GetResponse(HttpResponseMessage httpResponseMessage)
+        {
+            return new RESTResponse(httpResponseMessage);
         }
     }
 

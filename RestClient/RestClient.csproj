@@ -10,14 +10,14 @@
     <PackageProjectUrl>https://github.com/andreabbondanza/RESTClient</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/andreabbondanza/RESTClient/blob/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.9.0</Version>
+    <Version>2.0.0</Version>
     <PackageTags>Rest, Client, Dew</PackageTags>
     <PackageIconUrl>http://andrewdev.eu/wp-content/uploads/2016/08/OnlyLogo.png</PackageIconUrl>
     <RepositoryUrl>https://www.nuget.org/packages/DewRESTClientStandard/</RepositoryUrl>
     <RepositoryType>Nuget</RepositoryType>
     <PackageId>DewRestClient</PackageId>
-    <FileVersion>1.8.0.0</FileVersion>
-    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <PackageReleaseNotes>Added cookies</PackageReleaseNotes>
   </PropertyGroup>
 
@@ -30,7 +30,8 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="DewLogger" Version="2.0.0" />
+    <PackageReference Include="DewInternetAbstract" />
+    <PackageReference Include="DewLogger" />
   </ItemGroup>
 
 </Project>
