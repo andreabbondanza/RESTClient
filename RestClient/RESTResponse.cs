@@ -96,7 +96,7 @@ namespace DewCore.RestClient
         /// <returns></returns>
         public async Task<string> ReadResponseAsStringAsync()
         {
-            return this._response.Content != null ? await this._response.Content.ReadAsStringAsync() : null;
+            return _response.Content != null ? await _response.Content.ReadAsStringAsync() : null;
         }
         /// <summary>
         /// Return directly the HttpResponseMessage
@@ -104,7 +104,7 @@ namespace DewCore.RestClient
         /// <returns></returns>
         public HttpResponseMessage GetHttpResponse()
         {
-            return this._response;
+            return _response;
         }
         /// <summary>
         /// Dispose object

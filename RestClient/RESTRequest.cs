@@ -36,10 +36,6 @@ namespace DewCore.RestClient
         /// </summary>
         private Method _method = Method.GET;
         /// <summary>
-        /// Represent the http message handler used to certificate the request
-        /// </summary>
-        private HttpClientHandler _handler = null;
-        /// <summary>
         /// Add the content to the request
         /// </summary>
         /// <param name="content"></param>
@@ -212,55 +208,6 @@ namespace DewCore.RestClient
         {
             return this._url;
         }
-        /// <summary>
-        /// Set the http message handler
-        /// </summary>
-        /// <param name="handler"></param>
-        public void SetHandler(HttpClientHandler handler)
-        {
-            _handler = handler;
-        }
-        /// <summary>
-        /// Add certificate to request
-        /// </summary>
-        /// <param name="cert"></param>
-        public void InsertX509Certificate(X509Certificate cert)
-        {
-            if (_handler == null)
-            {
-                _handler = new HttpClientHandler();
-            }
-            _handler.ClientCertificates.Add(cert);
-        }
-        /// <summary>
-        /// Add certificate to request
-        /// </summary>
-        /// <param name="cert"></param>
-        public void RemoveX509Certificate(X509Certificate cert)
-        {
-            if (_handler == null)
-            {
-                _handler = new HttpClientHandler();
-            }
-            _handler.ClientCertificates.Remove(cert);
-        }
-        /// <summary>
-        /// Return the current http message handler
-        /// </summary>
-        /// <returns></returns>
-        public HttpClientHandler GetHandler()
-        {
-            return _handler;
-        }
-        /// <summary>
-        /// Return request certificates collection
-        /// </summary>
-        /// <returns></returns>
-        public X509CertificateCollection GetCertificates()
-        {
-            return _handler?.ClientCertificates;
-        }
-
         /// <summary>
         /// Constructor with url
         /// </summary>

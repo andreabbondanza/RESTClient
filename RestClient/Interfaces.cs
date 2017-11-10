@@ -29,15 +29,6 @@ namespace DewCore.Abstract.RestClient
     /// </summary>
     public interface IRESTRequest : IInternetRequest
     {
-        /// <summary>
-        /// Set a http message handler
-        /// </summary>
-        /// <param name="handler"></param>
-        void SetHandler(HttpClientHandler handler);
-        /// <summary>
-        /// Return the http message handler
-        /// </summary>
-        /// <returns></returns>
-        HttpClientHandler GetHandler();
+        
     }
 }

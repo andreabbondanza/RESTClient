@@ -48,13 +48,15 @@ request.SetMethod(Method.GET);
 request.SetUrl(apiHost + "2/categories");
 request.AddQueryArgs("order", "asc");
 request.AddHeader("Accept", "application/json");
-RESTClient client = new RESTClient();
-using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
+using(RESTClient client = new RESTClient())
 {
-    string myJson = null;
-    if(response.IsSuccesStatusCode())
-        myJson = response.ReadResponseAsStringAsync();
-    ...
+    using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
+    {
+        string myJson = null;
+        if(response.IsSuccesStatusCode())
+            myJson = response.ReadResponseAsStringAsync();
+        ...
+    }
 }
 ````
 
@@ -67,13 +69,14 @@ Dictionary<string, string> queryArgs = new Dictionary<string, string>();
 queryArgs.Add("order", "asc");
 Dictionary<string, string> headers = new Dictionary<string, string>();
 headers.Add("Accept", "application/json");
-RESTClient client = new RESTClient();
-using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers))
-{
-    string myJson = null;
-    if(response.IsSuccesStatusCode())
-        myJson = response.ReadResponseAsStringAsync();
-    ...
+using(RESTClient client = new RESTClient())
+    using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(apiHost + "2/categories", queryAargs, headers))
+    {
+        string myJson = null;
+        if(response.IsSuccesStatusCode())
+            myJson = response.ReadResponseAsStringAsync();
+        ...
+    }
 }
 ````
 
@@ -90,15 +93,19 @@ using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(
 - __IsFaultStatusCode()__ : _bool_ - True if type is Fault
 - __GetHttpStatusCodeType__ : _HttpStatusType_ - Return the status code type. If you want the status code you can use the enum in System.Net
 - __ReadResponseAsStringAsync__ : _awaitable Task\<string\>_ - Return the response as a string
-- __GetRestResponse__ : _HttpResponseMessage_ - Get the direct response object
+- __GetResponse__ : _HttpResponseMessage_ - Get the direct response object
 - __RESTResponse(HttpResponseMessage)__ : _constructor_ - Construct a new RESTResponse object
 
 ### RESTClient
 - __SetValidation(HeadersValidation)__ : _void_ - Set if the header must be validated before sending
 - __GetRESTResponse(HttpResponseMessage)__ : _IRESTResponse_ - Return a new RESTResèpmse object from the HttpResponseMessage
 - __IsValidUrl(string)__ : bool - Check if an url is valid
-- __RESTClient()__ : _constructor_
-- __RESTClient(HeadersValidation) : _constructor_
+- __GetHandler()__ : HttpClientHandler - _Get current http handler_
+- __SetHandler(HttpClientHandler)__ : Set a new handler for client. This will create also a new instance of httpclient in it
+- __RESTClient(CancellationToken)__ : _constructor_
+- __RESTClient(HeadersValidation, CancellationToken) : _constructor_
+- __RESTClient(HeaderValidatoin, HttpClientHandler, CancellationToken)__ : _constructor_
+- __RESTClient(HttpClientHandler, CancellationToken) : _constructor_
 - __PerformRequest(IRESTRequest)__ : _awaitable Task\<IRESTResponse\>_ - Perform a request by an IRESTRequest object
 - __PerformDeleteRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a delete request by an IRESTRequest object
 - __PerformPutRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a put request by an IRESTRequest object
@@ -112,7 +119,7 @@ using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(
 - __AddContent(HttpContent)__ : _void_ - Add a content to the request
 - __AddHeader(string,string)__ : _void_ - Add new header to the request
 - __AddQueryArgs(string,string)__ : _void_ - Add a new argoument to the query string
-- __SetUrl(string)_ : _void_ - Set the url to the request
+- __SetUrl(string)__ : _void_ - Set the url to the request
 - __IsValidUrl(string)__ : bool - Check if an url is valid
 - __GetMethod()__ : _Method_ - return the current method
 - __SetMethod(Method)__ : _void_ - return the current method
@@ -122,8 +129,6 @@ using(RESTResponse response = (RESTResponse)await client.PerformGetRequestAsync(
 - __GetUrl()__ : _string_ - Return the request URL
 - __RESTRequest(string)__ : _constructor_ - Construct a RESTRequest with url
 - __RESTRequest()__ : _constructor_ 
-- __AddX509Certificate(X509Certificate)__ : _void_ - Add a certificate to handler
-- __RemoveX509Certificate(X509Certificate)__ : _void_ - Remove a certificate from handler
 
 ## Note
 
