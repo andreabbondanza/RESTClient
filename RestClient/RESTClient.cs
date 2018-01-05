@@ -47,6 +47,7 @@ namespace DewCore.RestClient
         }
         private HttpRequestHeaders SetHeaders(HttpRequestHeaders headers, Dictionary<string, string> myHeaders)
         {
+            headers.Clear();
             var headersCollection = headers;
             if (myHeaders != null)
             {
