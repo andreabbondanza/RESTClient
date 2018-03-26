@@ -13,8 +13,12 @@ namespace DewCore.RestClient
     /// <summary>
     /// REST Request class
     /// </summary>
-    public class RESTRequest : IRESTRequest
+    public class RESTRequest : IRESTRequest, IDisposable
     {
+        /// <summary>
+        /// FormUrlEncodedStuff
+        /// </summary>
+        private Dictionary<string, string> _formUrlEncodedArgs = new Dictionary<string, string>();
         /// <summary>
         /// Headers
         /// </summary>
@@ -58,6 +62,7 @@ namespace DewCore.RestClient
             {
                 if (this._content.GetType() != typeof(MultipartFormDataContent))
                 {
+                    this._content?.Dispose();
                     this._content = new MultipartFormDataContent();
                 }
             }
@@ -79,6 +84,7 @@ namespace DewCore.RestClient
             {
                 if (this._content.GetType() != typeof(MultipartFormDataContent))
                 {
+                    this._content?.Dispose();
                     this._content = new MultipartFormDataContent();
                 }
             }
@@ -100,6 +106,7 @@ namespace DewCore.RestClient
             {
                 if (this._content.GetType() != typeof(MultipartFormDataContent))
                 {
+                    this._content?.Dispose();
                     this._content = new MultipartFormDataContent();
                 }
             }
@@ -208,6 +215,35 @@ namespace DewCore.RestClient
         {
             return this._url;
         }
+        /// <summary>
+        /// Add a new FormUrlEncodedContent to HTTPContent request. Be careful, it overwrite the previous HTTPContent, if it exists and is different for FormUrlEncodedContent
+        /// </summary>
+        /// <param name="key">If already exists, value will be overwritten</param>
+        /// <param name="value"></param>
+        public void AddFormUrlEncodedContent(string key, string value)
+        {
+            if (_formUrlEncodedArgs.ContainsKey(key))
+                _formUrlEncodedArgs[key] = value;
+            else
+                _formUrlEncodedArgs.Add(key, value);
+            if (this._content == null)
+            {
+                this._content = new FormUrlEncodedContent(_formUrlEncodedArgs);
+            }
+            else
+            {
+                this._content?.Dispose();
+                this._content = new FormUrlEncodedContent(_formUrlEncodedArgs);
+            }
+        }
+        /// <summary>
+        /// Dispose request
+        /// </summary>
+        public void Dispose()
+        {
+            this._content?.Dispose();
+        }
+
         /// <summary>
         /// Constructor with url
         /// </summary>

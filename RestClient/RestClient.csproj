@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard1.6</TargetFramework>
     <ApplicationIcon>OnlyLogo.ico</ApplicationIcon>
     <Authors>Andrea Vincenzo Abbondanza</Authors>
     <Company>Dew Studio</Company>
@@ -10,15 +10,15 @@
     <PackageProjectUrl>https://github.com/andreabbondanza/RESTClient</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/andreabbondanza/RESTClient/blob/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>3.0.1</Version>
+    <Version>4.0.0</Version>
     <PackageTags>Rest, Client, Dew</PackageTags>
     <PackageIconUrl>http://andrewdev.eu/wp-content/uploads/2016/08/OnlyLogo.png</PackageIconUrl>
     <RepositoryUrl>https://www.nuget.org/packages/DewRESTClientStandard/</RepositoryUrl>
     <RepositoryType>Nuget</RepositoryType>
     <PackageId>DewRestClient</PackageId>
-    <FileVersion>3.0.1.0</FileVersion>
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>
-    <PackageReleaseNotes>Fixed multiple headers bug</PackageReleaseNotes>
+    <FileVersion>4.0.0.0</FileVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <PackageReleaseNotes>Request now is Disposable, added formurlencodedcontent method, fixed some memory leak, .net standard 1.6</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

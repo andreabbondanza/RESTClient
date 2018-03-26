@@ -5,6 +5,8 @@
 # RESTClient
 A simple library for .net core that can help you to consume REST services.
 
+:warning: BREAK CHANGE IN 4.0.0 - Now the __RESTRequest__ object is disposable 
+
 ## Objects
 We have two object, RESTClient and RESTResponse that implements IRESTClient and IRESTResponse interfaces.
 We have also extended the HttpClient object with Patch\Head\Options wrappers over the classic GetAsync\PutAsync\PostAsync, so we have a full REST Client methods support.
@@ -43,19 +45,21 @@ You can use the library creating and filling a RESTRequest object this way.
 Es: 
 ````C#
 var apiHost = "https://myapi.com/";
-RESTRequest request = new RESTRequest();
-request.SetMethod(Method.GET);
-request.SetUrl(apiHost + "2/categories");
-request.AddQueryArgs("order", "asc");
-request.AddHeader("Accept", "application/json");
-using(RESTClient client = new RESTClient())
+using(RESTRequest request = new RESTRequest())
 {
-    using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
+    request.SetMethod(Method.GET);
+    request.SetUrl(apiHost + "2/categories");
+    request.AddQueryArgs("order", "asc");
+    request.AddHeader("Accept", "application/json");
+    using(RESTClient client = new RESTClient())
     {
-        string myJson = null;
-        if(response.IsSuccesStatusCode())
-            myJson = response.ReadResponseAsStringAsync();
-        ...
+        using(RESTResponse response = (RESTResponse)await client.PerformRequest(request))
+        {
+            string myJson = null;
+            if(response.IsSuccesStatusCode())
+                myJson = response.ReadResponseAsStringAsync();
+            ...
+        }
     }
 }
 ````
@@ -116,9 +120,9 @@ using(RESTClient client = new RESTClient())
 - __PerformOptionsRequestAsync(string, Dictionary\<string,string\>,Dictionary\<string,string\>)__ : _awaitable Task\<IRESTResponse\>_ - Perform a options request by an IRESTRequest object      
 
 ### RESTRequest
-- __AddContent(HttpContent)__ : _void_ - Add a content to the request
-- __AddHeader(string,string)__ : _void_ - Add new header to the request
-- __AddQueryArgs(string,string)__ : _void_ - Add a new argoument to the query string
+- __SetContent(HttpContent)__ : _void_ - Add a content to the request
+- __SetHeader(string,string)__ : _void_ - Add new header to the request
+- __SetQueryArgs(string,string)__ : _void_ - Add a new argoument to the query string
 - __SetUrl(string)__ : _void_ - Set the url to the request
 - __IsValidUrl(string)__ : bool - Check if an url is valid
 - __GetMethod()__ : _Method_ - return the current method
@@ -127,11 +131,17 @@ using(RESTClient client = new RESTClient())
 - __GetContent()__ : _HttpContent_ - Return the setted content
 - __GetQueryArgs()__ : _Dictionary\<string,string\>_ - Return the setted headers
 - __GetUrl()__ : _string_ - Return the request URL
+- __AddMultipartFormDataContent(string,byte[],string)__ : _void_ - Add a multipart form data
+- __AddMultipartFormDataContent(string,string)__ : _void_ - Add a multipart form data
+- __AddMultipartFormDataContent(string,Stream,string)__ : _void_ - Add a multipart form data
+- __AddFormUrlEncodedContent(string,string)__ : _void_ - Add a form url encoded data
+- __Dispose()__ : _void_
 - __RESTRequest(string)__ : _constructor_ - Construct a RESTRequest with url
 - __RESTRequest()__ : _constructor_ 
 
 ## Note
 
+:warning: BREAK CHANGE IN 4.0.0 - Now the __RESTRequest__ object is disposable 
 
 ## NuGet
 You can find it on nuget with the name [DewRESTClient](https://www.nuget.org/packages/DewRESTClientStandard/)
