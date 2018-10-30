@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/andreabbondanza/RESTClient</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/andreabbondanza/RESTClient/blob/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>4.0.0</Version>
+    <Version>4.0.1</Version>
     <PackageTags>Rest, Client, Dew</PackageTags>
     <PackageIconUrl>http://andrewdev.eu/wp-content/uploads/2016/08/OnlyLogo.png</PackageIconUrl>
     <RepositoryUrl>https://www.nuget.org/packages/DewRESTClientStandard/</RepositoryUrl>
@@ -18,7 +18,7 @@
     <PackageId>DewRestClient</PackageId>
     <FileVersion>4.0.0.0</FileVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <PackageReleaseNotes>Request now is Disposable, added formurlencodedcontent method, fixed some memory leak, .net standard 1.6</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed null reference exception for null condition operator</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

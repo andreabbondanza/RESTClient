@@ -321,7 +321,10 @@ namespace DewCore.RestClient
                 }
 
                 //Send the POST request
-                this.Log($"Performing POST Request to: {url} with args:{await content?.ReadAsStringAsync()}");
+                var contentLog = "";
+                if (content != null)
+                    contentLog = await content.ReadAsStringAsync();
+                this.Log($"Performing POST Request to: {url} with args:{contentLog}");
                 HttpResponseMessage httpResponse = await _httpClient.PostAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                 this.Log($"With response status code: {httpResponse.StatusCode}");
                 response = GetResponse(httpResponse); ;
@@ -363,7 +366,10 @@ namespace DewCore.RestClient
                     queryArgs = queryArgs.Substring(0, queryArgs.Length - 1);
                 }
                 //Send the PUT request
-                this.Log($"Performing PUT Request to: {url} with args:{await content?.ReadAsStringAsync()}");
+                var contentLog = "";
+                if (content != null)
+                    contentLog = await content.ReadAsStringAsync();
+                this.Log($"Performing PUT Request to: {url} with args:{contentLog}");
                 HttpResponseMessage httpResponse = await _httpClient.PutAsync(new Uri(url + queryArgs), content, this._cancellationToken);
                 this.Log($"With response status code: {httpResponse.StatusCode}");
                 response = GetResponse(httpResponse);
