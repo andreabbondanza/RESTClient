@@ -1,7 +1,3 @@
- Windows x64 | Ubuntu 12.04.5 LTS | NUGET |
---- | --- | --- |
-[![Build status](https://ci.appveyor.com/api/projects/status/a3m20yarjo7mpy2j?svg=true)](https://ci.appveyor.com/project/andreabbondanza/restclient) | [![Build Status](https://travis-ci.org/andreabbondanza/RESTClient.svg?branch=master)](https://travis-ci.org/andreabbondanza/RESTClient) | [![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg?style=flat-square)](https://www.nuget.org/packages/DewRestClient/)
-
 # RESTClient
 A simple library for .net core that can help you to consume REST services.
 
